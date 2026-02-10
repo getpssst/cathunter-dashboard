@@ -253,18 +253,8 @@ export function filterData(data, { period, country, platform }) {
   const days = periodDays[period] || 30;
   filtered = filtered.slice(-days);
 
-  if (platform === 'iOS') {
-    filtered = filtered.map((d) => ({
-      ...d,
-      newUsers: d.newUsersIos,
-      newUsersAndroid: 0,
-    }));
-  } else if (platform === 'Android') {
-    filtered = filtered.map((d) => ({
-      ...d,
-      newUsers: d.newUsersAndroid,
-      newUsersIos: 0,
-    }));
+  if (platform !== 'ALL') {
+    filtered = filtered.map((d) => applyPlatform(d, platform));
   }
 
   return filtered;
@@ -280,13 +270,31 @@ export function getPreviousPeriodData(data, { period, country, platform }) {
   const start = Math.max(0, end - days);
   let prev = source.slice(start, end);
 
-  if (platform === 'iOS') {
-    prev = prev.map((d) => ({ ...d, newUsers: d.newUsersIos, newUsersAndroid: 0 }));
-  } else if (platform === 'Android') {
-    prev = prev.map((d) => ({ ...d, newUsers: d.newUsersAndroid, newUsersIos: 0 }));
+  if (platform !== 'ALL') {
+    prev = prev.map((d) => applyPlatform(d, platform));
   }
 
   return prev;
+}
+
+// Scale all metrics proportionally by the platform's user share
+function applyPlatform(d, platform) {
+  const total = d.newUsersIos + d.newUsersAndroid;
+  if (total === 0) return { ...d, newUsers: 0, newCats: 0, newCatsStray: 0, newCatsHome: 0, shots: 0 };
+
+  const platformUsers = platform === 'iOS' ? d.newUsersIos : d.newUsersAndroid;
+  const ratio = platformUsers / total;
+
+  return {
+    ...d,
+    newUsers: platformUsers,
+    newUsersIos: platform === 'iOS' ? d.newUsersIos : 0,
+    newUsersAndroid: platform === 'Android' ? d.newUsersAndroid : 0,
+    newCats: Math.round(d.newCats * ratio),
+    newCatsStray: Math.round(d.newCatsStray * ratio),
+    newCatsHome: Math.round(d.newCatsHome * ratio),
+    shots: Math.round(d.shots * ratio),
+  };
 }
 
 // --- Aggregate for charts ---
