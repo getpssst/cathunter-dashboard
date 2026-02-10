@@ -19,7 +19,7 @@ export default function AgeSexChart({ data }) {
       <h3 className="text-sm font-semibold text-gray-700 mb-3">
         New Users&apos; Age/Sex
       </h3>
-      <ResponsiveContainer width="100%" height={480}>
+      <ResponsiveContainer width="100%" height={320}>
         <BarChart
           data={chartData}
           layout="vertical"
