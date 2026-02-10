@@ -218,6 +218,41 @@ function generateCountryAgeSexData() {
 
 export const countryAgeSexData = generateCountryAgeSexData();
 
+// --- Retention curve ---
+const RETENTION_DAYS = [0, 1, 2, 3, 5, 7, 10, 14, 21, 30];
+
+function generateRetentionCurve(d1Base, decayRate) {
+  return RETENTION_DAYS.map((day) => {
+    if (day === 0) return { day, rate: 100 };
+    // Exponential decay + noise
+    const base = 100 * Math.exp(-decayRate * day);
+    const noisy = clamp(base + randNormal(0, 2.5), 1, 99);
+    return { day, rate: Math.round(noisy * 10) / 10 };
+  });
+}
+
+// Global: D1 ~42%, D7 ~22%, D30 ~10%
+export const retentionData = generateRetentionCurve(42, 0.075);
+
+// Per-platform: iOS retains slightly better
+export const retentionByPlatform = {
+  ALL: retentionData,
+  iOS: generateRetentionCurve(46, 0.065),
+  Android: generateRetentionCurve(38, 0.085),
+};
+
+// Per-country
+export const retentionByCountry = {};
+COUNTRIES.forEach((c) => {
+  const d1 = clamp(randNormal(42, 8), 25, 60);
+  const decay = clamp(randNormal(0.075, 0.02), 0.03, 0.13);
+  retentionByCountry[c.code] = {
+    ALL: generateRetentionCurve(d1, decay),
+    iOS: generateRetentionCurve(d1 + randNormal(4, 2), decay * 0.85),
+    Android: generateRetentionCurve(d1 - randNormal(3, 2), decay * 1.15),
+  };
+});
+
 // --- Aggregate KPIs ---
 export function computeKpis(data, prevData) {
   const totalUsers = data.reduce((s, d) => s + d.newUsers, 0);

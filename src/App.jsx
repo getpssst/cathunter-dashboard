@@ -6,6 +6,7 @@ import NewCatsChart from './components/NewCatsChart';
 import AgeSexChart from './components/AgeSexChart';
 import DauMauChart from './components/DauMauChart';
 import WorldHeatmap from './components/WorldHeatmap';
+import RetentionChart from './components/RetentionChart';
 import {
   dailyData,
   filterData,
@@ -14,6 +15,8 @@ import {
   aggregateForChart,
   ageSexData,
   countryAgeSexData,
+  retentionByPlatform,
+  retentionByCountry,
 } from './data/fakeData';
 
 function App() {
@@ -63,6 +66,14 @@ function App() {
     }));
   }, [filters.country, filters.platform, filtered]);
 
+  const retentionData = useMemo(() => {
+    const platform = filters.platform;
+    if (filters.country === 'ALL') return retentionByPlatform[platform] || retentionByPlatform.ALL;
+    const countryRet = retentionByCountry[filters.country];
+    if (!countryRet) return retentionByPlatform[platform] || retentionByPlatform.ALL;
+    return countryRet[platform] || countryRet.ALL;
+  }, [filters.country, filters.platform]);
+
   return (
     <div className="min-h-screen bg-slate-100 p-4 lg:p-6">
       <div className="max-w-7xl mx-auto">
@@ -87,10 +98,7 @@ function App() {
           <NewUsersChart data={chartData} />
           <NewCatsChart data={chartData} />
           <AgeSexChart data={ageData} />
-          {/* Reserved placeholder */}
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 flex items-center justify-center">
-            <span className="text-sm text-gray-300 italic">Reserved</span>
-          </div>
+          <RetentionChart data={retentionData} />
         </div>
 
         {/* DAU/MAU Line Chart */}
