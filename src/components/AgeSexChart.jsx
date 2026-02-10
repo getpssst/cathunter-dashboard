@@ -19,8 +19,8 @@ function niceRound(val) {
 export default function AgeSexChart({ data }) {
   const chartData = data.map((d) => ({
     ageGroup: d.ageGroup,
-    Male: -d.male,
-    Female: d.female,
+    Female: -d.female,
+    Male: d.male,
   }));
 
   const rawMax = Math.max(

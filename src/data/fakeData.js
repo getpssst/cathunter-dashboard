@@ -65,25 +65,56 @@ const today = new Date(2026, 1, 10); // Feb 10, 2026
 
 function generateDailyData() {
   const days = [];
+
+  // Pre-generate dip events: 6-8 dips spread across the year, each 4-12 days
+  const dips = [];
+  const numDips = 6 + Math.floor(rand() * 3); // 6-8 dips
+  for (let d = 0; d < numDips; d++) {
+    const center = 30 + Math.floor(rand() * (TOTAL_DAYS - 60)); // avoid edges
+    const halfWidth = 2 + Math.floor(rand() * 5); // 2-6 day half-width
+    const depth = 0.55 + rand() * 0.25; // multiplier 0.55-0.80 at peak dip
+    dips.push({ center, halfWidth, depth });
+  }
+
   for (let i = TOTAL_DAYS - 1; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(date.getDate() - i);
     const dateStr = date.toISOString().slice(0, 10);
     const month = date.getMonth(); // 0-11
     const dow = date.getDay(); // 0=Sun
+    const dayIndex = TOTAL_DAYS - 1 - i; // 0..364
 
-    // Growth curve with seasonal variation and noise
-    const progress = (TOTAL_DAYS - i) / TOTAL_DAYS;
+    // Strong growth curve: starts at 50, ends ~450 (9x growth over the year)
+    const progress = dayIndex / TOTAL_DAYS;
+    const growthBase = 50 + 400 * Math.pow(progress, 1.3); // slightly exponential
+
+    // Seasonal: summer peak, holiday bump
     const seasonalFactor = 1.0
-      + 0.25 * Math.sin((month - 3) * Math.PI / 6)   // summer peak
-      + 0.10 * Math.sin((month - 11) * Math.PI / 3);  // holiday bump
-    const weekendFactor = (dow === 0 || dow === 6) ? 1.15 + rand() * 0.1 : 1.0;
-    const spikeFactor = rand() < 0.03 ? 1.5 + rand() * 1.0 : 1.0; // random viral spikes
-    const noise = 0.7 + rand() * 0.6; // +-30% day noise
+      + 0.15 * Math.sin((month - 3) * Math.PI / 6)
+      + 0.08 * Math.sin((month - 11) * Math.PI / 3);
+    const weekendFactor = (dow === 0 || dow === 6) ? 1.12 + rand() * 0.08 : 1.0;
 
-    const baseUsers = Math.round(
-      (80 + progress * 300) * seasonalFactor * weekendFactor * spikeFactor * noise
-    );
+    // Viral spikes: rare but noticeable
+    const spikeFactor = rand() < 0.025 ? 1.4 + rand() * 0.8 : 1.0;
+
+    // Local dips: smooth bell-shaped drops
+    let dipFactor = 1.0;
+    for (const dip of dips) {
+      const dist = Math.abs(dayIndex - dip.center);
+      if (dist <= dip.halfWidth * 2) {
+        const t = dist / dip.halfWidth;
+        const dipAmount = (1.0 - dip.depth) * Math.exp(-t * t);
+        dipFactor -= dipAmount;
+      }
+    }
+    dipFactor = Math.max(dipFactor, 0.45);
+
+    // Mild daily noise (±15%) so growth trend is clearly visible
+    const noise = 0.85 + rand() * 0.30;
+
+    const baseUsers = Math.max(10, Math.round(
+      growthBase * seasonalFactor * weekendFactor * spikeFactor * dipFactor * noise
+    ));
 
     // Cats derived from users: normal dist, mean ~2.2, capped at 5
     const catsPerUserToday = clamp(randNormal(2.2, 0.8), 0.5, 5.0);
@@ -93,19 +124,19 @@ function generateDailyData() {
     const shotsPerCatToday = clamp(randNormal(4.5, 2.0), 1.0, 10.0);
     const baseShots = Math.round(baseCats * shotsPerCatToday);
 
-    // Platform split: varies wildly by day (global average ~38% iOS)
-    const iosRatio = clamp(randNormal(0.38, 0.12), 0.10, 0.75);
+    // Platform split: varies by day (global average ~38% iOS)
+    const iosRatio = clamp(randNormal(0.38, 0.10), 0.12, 0.70);
     const usersIos = Math.round(baseUsers * iosRatio);
     const usersAndroid = baseUsers - usersIos;
 
-    // Cat type split: stray dominates but varies a lot
-    const strayRatio = clamp(randNormal(0.62, 0.15), 0.25, 0.90);
+    // Cat type split: stray dominates
+    const strayRatio = clamp(randNormal(0.62, 0.12), 0.30, 0.85);
     const catsStray = Math.round(baseCats * strayRatio);
     const catsHome = baseCats - catsStray;
 
     // DAU/MAU grows over time with noise
     const dauMau = clamp(
-      0.12 + progress * 0.12 + randNormal(0, 0.03),
+      0.10 + progress * 0.15 + randNormal(0, 0.02),
       0.05, 0.40
     );
 
