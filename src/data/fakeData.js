@@ -23,33 +23,38 @@ function clamp(val, min, max) {
   return Math.max(min, Math.min(max, val));
 }
 
+// --- Continents ---
+export const CONTINENTS = [
+  'North America', 'South America', 'Europe', 'Asia', 'Africa', 'Oceania',
+];
+
 // --- Countries with unique behavioral profiles ---
 export const COUNTRIES = [
-  { code: 'USA', name: 'United States',  userWeight: 100, catsPerUser: 2.5, shotsPerCat: 5.0, iosShare: 0.58 },
-  { code: 'BRA', name: 'Brazil',         userWeight: 45,  catsPerUser: 3.2, shotsPerCat: 7.0, iosShare: 0.20 },
-  { code: 'GBR', name: 'United Kingdom', userWeight: 30,  catsPerUser: 1.8, shotsPerCat: 4.0, iosShare: 0.52 },
-  { code: 'DEU', name: 'Germany',        userWeight: 25,  catsPerUser: 1.5, shotsPerCat: 3.5, iosShare: 0.35 },
-  { code: 'FRA', name: 'France',         userWeight: 22,  catsPerUser: 2.0, shotsPerCat: 4.5, iosShare: 0.40 },
-  { code: 'IND', name: 'India',          userWeight: 80,  catsPerUser: 4.0, shotsPerCat: 8.0, iosShare: 0.08 },
-  { code: 'CHN', name: 'China',          userWeight: 60,  catsPerUser: 1.2, shotsPerCat: 3.0, iosShare: 0.25 },
-  { code: 'JPN', name: 'Japan',          userWeight: 35,  catsPerUser: 3.8, shotsPerCat: 9.0, iosShare: 0.70 },
-  { code: 'KOR', name: 'South Korea',    userWeight: 18,  catsPerUser: 2.8, shotsPerCat: 6.5, iosShare: 0.30 },
-  { code: 'AUS', name: 'Australia',      userWeight: 12,  catsPerUser: 2.2, shotsPerCat: 5.5, iosShare: 0.55 },
-  { code: 'CAN', name: 'Canada',         userWeight: 15,  catsPerUser: 2.0, shotsPerCat: 4.0, iosShare: 0.56 },
-  { code: 'MEX', name: 'Mexico',         userWeight: 20,  catsPerUser: 3.5, shotsPerCat: 7.5, iosShare: 0.18 },
-  { code: 'ARG', name: 'Argentina',      userWeight: 8,   catsPerUser: 2.8, shotsPerCat: 6.0, iosShare: 0.15 },
-  { code: 'CHL', name: 'Chile',          userWeight: 4,   catsPerUser: 2.0, shotsPerCat: 4.5, iosShare: 0.22 },
-  { code: 'RUS', name: 'Russia',         userWeight: 28,  catsPerUser: 3.0, shotsPerCat: 6.0, iosShare: 0.30 },
-  { code: 'TUR', name: 'Turkey',         userWeight: 16,  catsPerUser: 4.5, shotsPerCat: 9.5, iosShare: 0.22 },
-  { code: 'IDN', name: 'Indonesia',      userWeight: 40,  catsPerUser: 3.8, shotsPerCat: 8.5, iosShare: 0.10 },
-  { code: 'THA', name: 'Thailand',       userWeight: 14,  catsPerUser: 3.5, shotsPerCat: 7.0, iosShare: 0.25 },
-  { code: 'ESP', name: 'Spain',          userWeight: 15,  catsPerUser: 1.8, shotsPerCat: 4.0, iosShare: 0.38 },
-  { code: 'ITA', name: 'Italy',          userWeight: 17,  catsPerUser: 1.6, shotsPerCat: 3.8, iosShare: 0.32 },
-  { code: 'NGA', name: 'Nigeria',        userWeight: 10,  catsPerUser: 4.2, shotsPerCat: 9.0, iosShare: 0.06 },
-  { code: 'ZAF', name: 'South Africa',   userWeight: 6,   catsPerUser: 2.5, shotsPerCat: 5.5, iosShare: 0.20 },
-  { code: 'EGY', name: 'Egypt',          userWeight: 9,   catsPerUser: 3.8, shotsPerCat: 8.0, iosShare: 0.12 },
-  { code: 'COL', name: 'Colombia',       userWeight: 7,   catsPerUser: 2.6, shotsPerCat: 5.0, iosShare: 0.16 },
-  { code: 'PHL', name: 'Philippines',    userWeight: 13,  catsPerUser: 3.0, shotsPerCat: 7.0, iosShare: 0.12 },
+  { code: 'USA', name: 'United States',  continent: 'North America', userWeight: 100, catsPerUser: 2.5, shotsPerCat: 5.0, iosShare: 0.58 },
+  { code: 'CAN', name: 'Canada',         continent: 'North America', userWeight: 15,  catsPerUser: 2.0, shotsPerCat: 4.0, iosShare: 0.56 },
+  { code: 'MEX', name: 'Mexico',         continent: 'North America', userWeight: 20,  catsPerUser: 3.5, shotsPerCat: 7.5, iosShare: 0.18 },
+  { code: 'BRA', name: 'Brazil',         continent: 'South America', userWeight: 45,  catsPerUser: 3.2, shotsPerCat: 7.0, iosShare: 0.20 },
+  { code: 'ARG', name: 'Argentina',      continent: 'South America', userWeight: 8,   catsPerUser: 2.8, shotsPerCat: 6.0, iosShare: 0.15 },
+  { code: 'CHL', name: 'Chile',          continent: 'South America', userWeight: 4,   catsPerUser: 2.0, shotsPerCat: 4.5, iosShare: 0.22 },
+  { code: 'COL', name: 'Colombia',       continent: 'South America', userWeight: 7,   catsPerUser: 2.6, shotsPerCat: 5.0, iosShare: 0.16 },
+  { code: 'GBR', name: 'United Kingdom', continent: 'Europe',        userWeight: 30,  catsPerUser: 1.8, shotsPerCat: 4.0, iosShare: 0.52 },
+  { code: 'DEU', name: 'Germany',        continent: 'Europe',        userWeight: 25,  catsPerUser: 1.5, shotsPerCat: 3.5, iosShare: 0.35 },
+  { code: 'FRA', name: 'France',         continent: 'Europe',        userWeight: 22,  catsPerUser: 2.0, shotsPerCat: 4.5, iosShare: 0.40 },
+  { code: 'ESP', name: 'Spain',          continent: 'Europe',        userWeight: 15,  catsPerUser: 1.8, shotsPerCat: 4.0, iosShare: 0.38 },
+  { code: 'ITA', name: 'Italy',          continent: 'Europe',        userWeight: 17,  catsPerUser: 1.6, shotsPerCat: 3.8, iosShare: 0.32 },
+  { code: 'RUS', name: 'Russia',         continent: 'Europe',        userWeight: 28,  catsPerUser: 3.0, shotsPerCat: 6.0, iosShare: 0.30 },
+  { code: 'TUR', name: 'Turkey',         continent: 'Europe',        userWeight: 16,  catsPerUser: 4.5, shotsPerCat: 9.5, iosShare: 0.22 },
+  { code: 'IND', name: 'India',          continent: 'Asia',          userWeight: 80,  catsPerUser: 4.0, shotsPerCat: 8.0, iosShare: 0.08 },
+  { code: 'CHN', name: 'China',          continent: 'Asia',          userWeight: 60,  catsPerUser: 1.2, shotsPerCat: 3.0, iosShare: 0.25 },
+  { code: 'JPN', name: 'Japan',          continent: 'Asia',          userWeight: 35,  catsPerUser: 3.8, shotsPerCat: 9.0, iosShare: 0.70 },
+  { code: 'KOR', name: 'South Korea',    continent: 'Asia',          userWeight: 18,  catsPerUser: 2.8, shotsPerCat: 6.5, iosShare: 0.30 },
+  { code: 'IDN', name: 'Indonesia',      continent: 'Asia',          userWeight: 40,  catsPerUser: 3.8, shotsPerCat: 8.5, iosShare: 0.10 },
+  { code: 'THA', name: 'Thailand',       continent: 'Asia',          userWeight: 14,  catsPerUser: 3.5, shotsPerCat: 7.0, iosShare: 0.25 },
+  { code: 'PHL', name: 'Philippines',    continent: 'Asia',          userWeight: 13,  catsPerUser: 3.0, shotsPerCat: 7.0, iosShare: 0.12 },
+  { code: 'NGA', name: 'Nigeria',        continent: 'Africa',        userWeight: 10,  catsPerUser: 4.2, shotsPerCat: 9.0, iosShare: 0.06 },
+  { code: 'ZAF', name: 'South Africa',   continent: 'Africa',        userWeight: 6,   catsPerUser: 2.5, shotsPerCat: 5.5, iosShare: 0.20 },
+  { code: 'EGY', name: 'Egypt',          continent: 'Africa',        userWeight: 9,   catsPerUser: 3.8, shotsPerCat: 8.0, iosShare: 0.12 },
+  { code: 'AUS', name: 'Australia',      continent: 'Oceania',       userWeight: 12,  catsPerUser: 2.2, shotsPerCat: 5.5, iosShare: 0.55 },
 ];
 
 const totalUserWeight = COUNTRIES.reduce((s, c) => s + c.userWeight, 0);
@@ -281,8 +286,40 @@ export function computeKpis(data, prevData) {
 }
 
 // --- Filter & aggregate helpers ---
-export function filterData(data, { period, country, platform }) {
-  let filtered = country === 'ALL' ? data : (countryDailyData[country] || []);
+function resolveSource(data, { continent, country }) {
+  if (country !== 'ALL') return countryDailyData[country] || [];
+  if (continent !== 'ALL') return aggregateContinentData(continent);
+  return data;
+}
+
+function aggregateContinentData(continent) {
+  const codes = COUNTRIES.filter((c) => c.continent === continent).map((c) => c.code);
+  if (codes.length === 0) return [];
+  // Sum daily data across all countries in the continent
+  const len = dailyData.length;
+  return Array.from({ length: len }, (_, i) => {
+    const base = { date: dailyData[i].date, newUsers: 0, newUsersIos: 0, newUsersAndroid: 0, newCats: 0, newCatsStray: 0, newCatsHome: 0, shots: 0, dauMau: 0 };
+    let dauCount = 0;
+    codes.forEach((code) => {
+      const d = countryDailyData[code]?.[i];
+      if (!d) return;
+      base.newUsers += d.newUsers;
+      base.newUsersIos += d.newUsersIos;
+      base.newUsersAndroid += d.newUsersAndroid;
+      base.newCats += d.newCats;
+      base.newCatsStray += d.newCatsStray;
+      base.newCatsHome += d.newCatsHome;
+      base.shots += d.shots;
+      base.dauMau += d.dauMau;
+      dauCount++;
+    });
+    if (dauCount > 0) base.dauMau /= dauCount;
+    return base;
+  });
+}
+
+export function filterData(data, { period, country, platform, continent = 'ALL' }) {
+  let filtered = resolveSource(data, { continent, country });
 
   const periodDays = { D: 1, W: 7, M: 30, Y: 365, ALL: filtered.length };
   const days = periodDays[period] || 30;
@@ -295,8 +332,8 @@ export function filterData(data, { period, country, platform }) {
   return filtered;
 }
 
-export function getPreviousPeriodData(data, { period, country, platform }) {
-  let source = country === 'ALL' ? data : (countryDailyData[country] || []);
+export function getPreviousPeriodData(data, { period, country, platform, continent = 'ALL' }) {
+  let source = resolveSource(data, { continent, country });
   const periodDays = { D: 1, W: 7, M: 30, Y: 365, ALL: source.length };
   const days = periodDays[period] || 30;
 

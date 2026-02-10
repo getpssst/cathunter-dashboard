@@ -17,11 +17,14 @@ import {
   countryAgeSexData,
   retentionByPlatform,
   retentionByCountry,
+  COUNTRIES,
+  AGE_GROUPS,
 } from './data/fakeData';
 
 function App() {
   const [filters, setFilters] = useState({
     period: 'M',
+    continent: 'ALL',
     country: 'ALL',
     platform: 'ALL',
   });
@@ -46,25 +49,55 @@ function App() {
     [filtered, filters.period]
   );
 
-  const ageData = useMemo(() => {
-    const base = filters.country === 'ALL'
-      ? ageSexData
-      : countryAgeSexData[filters.country] || ageSexData;
-    if (filters.platform === 'ALL') return base;
+  // Full-year data for the same geo scope (to compute period ratio)
+  const fullYearFiltered = useMemo(
+    () => filterData(dailyData, { ...filters, period: 'ALL', platform: 'ALL' }),
+    [filters.continent, filters.country]
+  );
 
-    // Compute platform ratio from filtered daily data
-    const totIos = filtered.reduce((s, d) => s + d.newUsersIos, 0);
-    const totAnd = filtered.reduce((s, d) => s + d.newUsersAndroid, 0);
-    const total = totIos + totAnd;
-    if (total === 0) return base;
-    const ratio = filters.platform === 'iOS' ? totIos / total : totAnd / total;
+  const ageData = useMemo(() => {
+    let base;
+    if (filters.country !== 'ALL') {
+      base = countryAgeSexData[filters.country] || ageSexData;
+    } else if (filters.continent !== 'ALL') {
+      const codes = COUNTRIES.filter((c) => c.continent === filters.continent).map((c) => c.code);
+      base = AGE_GROUPS.map((group, idx) => {
+        let male = 0, female = 0;
+        codes.forEach((code) => {
+          const cd = countryAgeSexData[code];
+          if (cd && cd[idx]) { male += cd[idx].male; female += cd[idx].female; }
+        });
+        return { ageGroup: group, male, female };
+      });
+    } else {
+      base = ageSexData;
+    }
+
+    // Scale by period: ratio of users in selected period vs full year
+    const fullUsers = fullYearFiltered.reduce((s, d) => s + d.newUsers, 0);
+    const periodUsers = filtered.reduce((s, d) => s + d.newUsers, 0);
+    let periodRatio = fullUsers > 0 ? periodUsers / fullUsers : 1;
+
+    // Scale by platform
+    let platformRatio = 1;
+    if (filters.platform !== 'ALL') {
+      const totIos = filtered.reduce((s, d) => s + d.newUsersIos, 0);
+      const totAnd = filtered.reduce((s, d) => s + d.newUsersAndroid, 0);
+      const total = totIos + totAnd;
+      if (total > 0) {
+        platformRatio = filters.platform === 'iOS' ? totIos / total : totAnd / total;
+      }
+    }
+
+    const scale = periodRatio * platformRatio;
+    if (scale === 1) return base;
 
     return base.map((d) => ({
       ageGroup: d.ageGroup,
-      male: Math.round(d.male * ratio),
-      female: Math.round(d.female * ratio),
+      male: Math.max(1, Math.round(d.male * scale)),
+      female: Math.max(1, Math.round(d.female * scale)),
     }));
-  }, [filters.country, filters.platform, filtered]);
+  }, [filters, filtered, fullYearFiltered]);
 
   const retentionData = useMemo(() => {
     const platform = filters.platform;
