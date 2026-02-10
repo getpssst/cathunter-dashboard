@@ -83,7 +83,7 @@ function App() {
 
         {/* DAU/MAU Line Chart */}
         <div className="grid grid-cols-1 mb-4">
-          <DauMauChart data={filtered} />
+          <DauMauChart data={dailyData} />
         </div>
 
         {/* World Heatmap */}
