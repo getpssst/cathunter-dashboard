@@ -49,6 +49,8 @@ function App() {
     [filtered, filters.period]
   );
 
+  const last30 = useMemo(() => dailyData.slice(-30), []);
+
   const ageData = useMemo(() => {
     const safe = (v) => (Number.isFinite(v) ? v : 0);
 
@@ -118,6 +120,9 @@ function App() {
           </a>
         </div>
 
+        {/* Key Insights */}
+        <InsightsBlock data={last30} />
+
         {/* Filters */}
         <Filters filters={filters} onChange={setFilters} />
 
@@ -131,9 +136,6 @@ function App() {
           <AgeSexChart data={ageData} />
           <EngagementChart data={chartData} />
         </div>
-
-        {/* Insights */}
-        <InsightsBlock data={filtered} filters={filters} />
 
         {/* World Heatmap */}
         <WorldHeatmap filters={filters} onChange={setFilters} />

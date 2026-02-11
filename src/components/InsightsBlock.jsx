@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { formatNumber } from '../utils/formatNumber';
-import { COUNTRIES } from '../data/fakeData';
 
 function safe(v) {
   return Number.isFinite(v) ? v : 0;
@@ -26,31 +25,13 @@ function fmtDateRange(from, to) {
   return `${fmtDate(from)} – ${fmtDate(to)}`;
 }
 
-const PERIOD_LABELS = { D: 'today', W: 'this week', M: 'this month', Y: 'this year', ALL: 'all time' };
-const PLATFORM_LABELS = { ALL: '', iOS: 'iOS ', Android: 'Android ' };
-const CAT_LABELS = { ALL: '', Stray: 'stray ', Home: 'home ' };
-
-function contextLabel(filters) {
-  const parts = [];
-  if (filters.country !== 'ALL') {
-    const c = COUNTRIES.find((x) => x.code === filters.country);
-    parts.push(c?.name || filters.country);
-  } else if (filters.continent !== 'ALL') {
-    parts.push(filters.continent);
-  }
-  const plat = PLATFORM_LABELS[filters.platform] || '';
-  const cat = CAT_LABELS[filters.catType] || '';
-  if (plat || cat) parts.push(`${plat}${cat}`.trim());
-  return parts.length > 0 ? parts.join(', ') : 'globally';
-}
-
-function detectInsights(data, filters) {
+function detectInsights(data) {
   if (!data || data.length < 2) return [];
 
   const candidates = [];
   const n = data.length;
-  const ctx = contextLabel(filters);
-  const period = PERIOD_LABELS[filters.period] || '';
+  const ctx = 'globally';
+  const period = 'last 30 days';
 
   const users = data.map((d) => safe(d.newUsers));
   const cats = data.map((d) => safe(d.newCats));
@@ -156,8 +137,8 @@ function detectInsights(data, filters) {
     }
   }
 
-  // --- 5. Stray/Home ratio (only when visible) ---
-  if (totalCats > 0 && filters.catType === 'ALL') {
+  // --- 5. Stray/Home ratio ---
+  if (totalCats > 0) {
     const totalStray = data.reduce((s, d) => s + safe(d.newCatsStray), 0);
     const strayPct = (totalStray / totalCats) * 100;
     if (strayPct > 70 || strayPct < 25) {
@@ -212,14 +193,14 @@ const TYPE_STYLES = {
   info: { bg: 'bg-blue-50', border: 'border-blue-200', icon: '◆', iconColor: 'text-blue-500' },
 };
 
-export default function InsightsBlock({ data, filters }) {
-  const insights = useMemo(() => detectInsights(data, filters), [data, filters]);
+export default function InsightsBlock({ data }) {
+  const insights = useMemo(() => detectInsights(data), [data]);
 
   if (insights.length === 0) return null;
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 mb-4">
-      <h3 className="text-sm font-semibold text-gray-700 mb-3">NB</h3>
+      <h3 className="text-sm font-semibold text-gray-700 mb-3">Key Insights for last 30 days</h3>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
         {insights.map((insight, i) => {
           const style = TYPE_STYLES[insight.type] || TYPE_STYLES.info;
