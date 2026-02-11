@@ -214,22 +214,6 @@ export default function WorldHeatmap({ filters, onChange }) {
     return { scale: 135, center: [0, 25] };
   }, [selectedCountry, zoomedRegion]);
 
-  // Cat dots for region zoom view — dot count matches the region's metric
-  const regionDots = useMemo(() => {
-    if (!zoomedRegion || !selectedCountry) return [];
-    const regionInfo = regionData[zoomedRegion.isoCode];
-    const regionCats = regionInfo?.cats || 0;
-    // Dot count = region metric, capped at 500 for performance
-    const dotCount = Math.min(regionCats, 500);
-    if (dotCount <= 0) return [];
-    const allDots = generateCountryCatDots(selectedCountry.code, catType, dotCount, zoomedRegion.id);
-    // Filter out dots that fall outside the region polygon (e.g. in water)
-    if (zoomedRegion.geoData) {
-      return allDots.filter((d) => pointInGeometry(d.coordinates, zoomedRegion.geoData));
-    }
-    return allDots;
-  }, [zoomedRegion, selectedCountry, catType, period, regionData]);
-
   // Region data for country drill-down — distribute country metrics across admin regions
   const regionData = useMemo(() => {
     if (!selectedCountry) return {};
@@ -262,6 +246,22 @@ export default function WorldHeatmap({ filters, onChange }) {
     });
     return out;
   }, [selectedCountry, countryAgg]);
+
+  // Cat dots for region zoom view — dot count matches the region's metric
+  const regionDots = useMemo(() => {
+    if (!zoomedRegion || !selectedCountry) return [];
+    const regionInfo = regionData[zoomedRegion.isoCode];
+    const regionCats = regionInfo?.cats || 0;
+    // Dot count = region metric, capped at 500 for performance
+    const dotCount = Math.min(regionCats, 500);
+    if (dotCount <= 0) return [];
+    const allDots = generateCountryCatDots(selectedCountry.code, catType, dotCount, zoomedRegion.id);
+    // Filter out dots that fall outside the region polygon (e.g. in water)
+    if (zoomedRegion.geoData) {
+      return allDots.filter((d) => pointInGeometry(d.coordinates, zoomedRegion.geoData));
+    }
+    return allDots;
+  }, [zoomedRegion, selectedCountry, catType, period, regionData]);
 
   const maxRegionCats = useMemo(() => {
     const values = Object.values(regionData).map((r) => r.cats);
