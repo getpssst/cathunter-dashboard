@@ -4,7 +4,7 @@
  * If decimal is .0, show integer only.
  */
 export function formatNumber(value) {
-  if (value == null) return '—';
+  if (value == null || !Number.isFinite(value)) return '—';
   const abs = Math.abs(value);
 
   if (abs >= 1_000_000_000) {
@@ -53,7 +53,7 @@ function fmt(n, suffix) {
  * Rounded to 2 decimal places.
  */
 export function formatDauMau(value) {
-  if (value == null) return '—';
+  if (value == null || !Number.isFinite(value)) return '—';
   return value.toFixed(2);
 }
 
@@ -61,7 +61,7 @@ export function formatDauMau(value) {
  * Format percentage change with sign
  */
 export function formatChange(value) {
-  if (value == null) return '—';
+  if (value == null || !Number.isFinite(value)) return '—';
   const sign = value >= 0 ? '+' : '';
   return `${sign}${value.toFixed(1)}%`;
 }

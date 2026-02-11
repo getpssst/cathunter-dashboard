@@ -3,22 +3,38 @@ import {
   ComposableMap,
   Geographies,
   Geography,
-  ZoomableGroup,
-  Marker,
 } from 'react-simple-maps';
 import { formatNumber } from '../utils/formatNumber';
 import {
   COUNTRIES,
-  CAT_REGIONS,
+  ADMIN_REGIONS,
   CAT_CITIES,
-  catEvents,
-  dailyData,
   filterData,
+  dailyData,
 } from '../data/fakeData';
 
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+const ADMIN1_URL = '/admin1.json';
 
-// world-atlas TopoJSON uses numeric IDs without leading zeros
+// Crimea overlay — ensures Crimea renders as part of Russia on the base map
+const CRIMEA_GEO = {
+  type: 'FeatureCollection',
+  features: [{
+    type: 'Feature',
+    id: '643',
+    properties: { name: 'Crimea' },
+    geometry: {
+      type: 'Polygon',
+      coordinates: [[
+        [32.49, 45.34], [33.38, 46.10], [34.07, 46.10], [35.18, 45.68],
+        [35.82, 45.39], [36.52, 45.19], [36.64, 45.06], [36.42, 44.96],
+        [35.37, 44.52], [34.22, 44.42], [33.74, 44.39], [33.37, 44.50],
+        [32.49, 44.59], [32.49, 45.34],
+      ]],
+    },
+  }],
+};
+
 const NUMERIC_TO_ALPHA3 = {
   '840': 'USA', '76': 'BRA', '826': 'GBR', '276': 'DEU', '250': 'FRA',
   '356': 'IND', '156': 'CHN', '392': 'JPN', '410': 'KOR', '36': 'AUS',
@@ -27,90 +43,41 @@ const NUMERIC_TO_ALPHA3 = {
   '566': 'NGA', '710': 'ZAF', '818': 'EGY', '170': 'COL', '608': 'PHL',
 };
 
-const PERIOD_DAYS = { D: 1, W: 7, M: 30, Y: 365, ALL: 365 };
-const MAX_ZOOM = 12;
-const CAT_ZOOM_MIN = 5.6;
-const CITY_ZOOM_MIN = 2.6;
-const REGION_ZOOM_MIN = 1.6;
-
 const COUNTRY_BY_CODE = Object.fromEntries(COUNTRIES.map((c) => [c.code, c]));
-const CITY_BY_ID = Object.fromEntries(CAT_CITIES.map((c) => [c.id, c]));
-const REGION_BY_ID = Object.fromEntries(CAT_REGIONS.map((r) => [r.id, r]));
 
-function clamp(v, min, max) {
-  return Math.max(min, Math.min(max, v));
-}
-
-function getGeoTarget(filters) {
-  const country = filters?.country ?? 'ALL';
-  const continent = filters?.continent ?? 'ALL';
-
-  if (country !== 'ALL') {
-    const c = COUNTRY_BY_CODE[country];
-    return { coordinates: c?.center ?? [0, 30], zoom: 3.0 };
-  }
-
-  if (continent !== 'ALL') {
-    const list = COUNTRIES.filter((c) => c.continent === continent);
-    if (list.length > 0) {
-      const lng = list.reduce((s, c) => s + (c.center?.[0] ?? 0), 0) / list.length;
-      const lat = list.reduce((s, c) => s + (c.center?.[1] ?? 0), 0) / list.length;
-      return { coordinates: [lng, lat], zoom: 1.6 };
-    }
-  }
-
-  return { coordinates: [0, 30], zoom: 1.1 };
-}
-
-function getEnabledCountryCodes(filters) {
-  const country = filters?.country ?? 'ALL';
-  const continent = filters?.continent ?? 'ALL';
-
-  if (country !== 'ALL') return [country];
-  if (continent !== 'ALL') return COUNTRIES.filter((c) => c.continent === continent).map((c) => c.code);
-  return COUNTRIES.map((c) => c.code);
-}
+const COUNTRY_SCALE = {
+  USA: 600, CAN: 380, MEX: 900, BRA: 550, ARG: 700,
+  CHL: 700, COL: 1200, GBR: 2200, DEU: 2200, FRA: 1600,
+  ESP: 1700, ITA: 1700, RUS: 280, TUR: 1500, IND: 800,
+  CHN: 500, JPN: 1300, KOR: 3500, IDN: 550, THA: 1500,
+  PHL: 1300, NGA: 1500, ZAF: 1200, EGY: 1500, AUS: 550,
+};
 
 function sum(arr, key) {
   return arr.reduce((s, d) => s + (d[key] || 0), 0);
 }
 
-function markerRadius(count, kind) {
-  const base = kind === 'region' ? 4 : 3;
-  const k = kind === 'region' ? 0.22 : 0.25;
-  const maxR = kind === 'region' ? 18 : 14;
-  return clamp(base + Math.sqrt(count) * k, 2.5, maxR);
-}
-
-function pickCatsInRadius(cats, center, zoom) {
-  const [cx, cy] = center;
-  const radius = 18 / Math.max(zoom, 1);
-  const r2 = radius * radius;
-
-  return cats.filter((c) => {
-    const dx = c.coordinates[0] - cx;
-    const dy = c.coordinates[1] - cy;
-    return (dx * dx + dy * dy) <= r2;
-  });
-}
-
-export default function WorldHeatmap({ filters }) {
+export default function WorldHeatmap({ filters, onChange }) {
   const {
-    period = 'M',
+    period = 'ALL',
     continent = 'ALL',
     country = 'ALL',
     platform = 'ALL',
     catType = 'ALL',
   } = filters || {};
 
-  const [tooltip, setTooltip] = useState(null); // { type, ... }
+  const [tooltip, setTooltip] = useState(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [containerSize, setContainerSize] = useState({ w: 0, h: 0 });
-  const [focus, setFocus] = useState(null); // { type: 'region'|'city', id }
 
-  const geoTarget = useMemo(() => getGeoTarget({ country, continent }), [country, continent]);
-  const [position, setPosition] = useState(() => geoTarget);
-  const enabledCountryCodes = useMemo(() => getEnabledCountryCodes({ country, continent }), [country, continent]);
+  const isCountryView = country !== 'ALL';
+  const selectedCountry = isCountryView ? COUNTRY_BY_CODE[country] : null;
+
+  const enabledCodes = useMemo(() => {
+    if (continent !== 'ALL') {
+      return new Set(COUNTRIES.filter((c) => c.continent === continent).map((c) => c.code));
+    }
+    return new Set(COUNTRIES.map((c) => c.code));
+  }, [continent]);
 
   const countryAgg = useMemo(() => {
     const out = {};
@@ -122,7 +89,6 @@ export default function WorldHeatmap({ filters }) {
         platform,
         catType,
       });
-
       out[c.code] = {
         code: c.code,
         name: c.name,
@@ -135,367 +101,300 @@ export default function WorldHeatmap({ filters }) {
   }, [period, platform, catType]);
 
   const maxVal = useMemo(() => {
-    const values = enabledCountryCodes.map((code) => (countryAgg[code]?.cats ?? 0));
+    const codes = [...enabledCodes];
+    const values = codes.map((code) => countryAgg[code]?.cats ?? 0);
     return Math.max(...values, 1);
-  }, [enabledCountryCodes, countryAgg]);
+  }, [countryAgg, enabledCodes]);
 
-  const getColor = (value) => {
-    if (!value) return '#f1f5f9';
-    const intensity = Math.pow(value / maxVal, 0.5);
-    const r = Math.round(241 - intensity * (241 - 30));
-    const g = Math.round(245 - intensity * (245 - 64));
-    const b = Math.round(249 - intensity * (249 - 175));
-    return `rgb(${r}, ${g}, ${b})`;
-  };
+  const getColor = useCallback(
+    (value) => {
+      if (!value) return '#f1f5f9';
+      const intensity = Math.pow(value / maxVal, 0.5);
+      const r = Math.round(241 - intensity * (241 - 30));
+      const g = Math.round(245 - intensity * (245 - 64));
+      const b = Math.round(249 - intensity * (249 - 175));
+      return `rgb(${r}, ${g}, ${b})`;
+    },
+    [maxVal],
+  );
+
+  // Projection config
+  const projectionConfig = useMemo(() => {
+    if (selectedCountry) {
+      return {
+        scale: COUNTRY_SCALE[selectedCountry.code] || 800,
+        center: selectedCountry.center || [0, 30],
+      };
+    }
+    return { scale: 135, center: [0, 25] };
+  }, [selectedCountry]);
+
+  // Region data for country drill-down — distribute country metrics across admin regions
+  const regionData = useMemo(() => {
+    if (!selectedCountry) return {};
+    const code = selectedCountry.code;
+    const agg = countryAgg[code] || { users: 0, cats: 0, shots: 0 };
+
+    const regions = ADMIN_REGIONS.filter((r) => r.countryCode === code);
+    const cities = CAT_CITIES.filter((c) => c.countryCode === code);
+
+    // Compute weights from cities mapped to regions
+    const regionWeights = {};
+    regions.forEach((r) => { regionWeights[r.id] = r.weight || 0; });
+    cities.forEach((c) => {
+      if (regionWeights[c.regionId] !== undefined) {
+        regionWeights[c.regionId] += c.weight;
+      }
+    });
+
+    const totalWeight = Object.values(regionWeights).reduce((s, w) => s + w, 0);
+
+    const out = {};
+    regions.forEach((r) => {
+      const share = totalWeight > 0 ? (regionWeights[r.id] || 0) / totalWeight : 0;
+      out[r.isoCode] = {
+        ...r,
+        users: Math.round(agg.users * share),
+        cats: Math.round(agg.cats * share),
+        shots: Math.round(agg.shots * share),
+      };
+    });
+    return out;
+  }, [selectedCountry, countryAgg]);
+
+  const maxRegionCats = useMemo(() => {
+    const values = Object.values(regionData).map((r) => r.cats);
+    return Math.max(...values, 1);
+  }, [regionData]);
+
+  const getRegionColor = useCallback(
+    (value) => {
+      if (!value) return '#f1f5f9';
+      const intensity = Math.pow(value / maxRegionCats, 0.5);
+      const r = Math.round(241 - intensity * (241 - 30));
+      const g = Math.round(245 - intensity * (245 - 64));
+      const b = Math.round(249 - intensity * (249 - 175));
+      return `rgb(${r}, ${g}, ${b})`;
+    },
+    [maxRegionCats],
+  );
 
   const handleMouseMove = useCallback((e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    setContainerSize((s) => {
-      const w = Math.round(rect.width);
-      const h = Math.round(rect.height);
-      return s.w === w && s.h === h ? s : { w, h };
-    });
   }, []);
 
-  const tooltipStyle = useMemo(() => {
-    const pad = 12;
-    const offset = 14;
-    const maxWidth = containerSize.w ? Math.min(280, containerSize.w - pad * 2) : 280;
+  const handleCountryClick = (code) => {
+    onChange?.({ ...filters, country: code });
+    setTooltip(null);
+  };
 
-    let left = mousePos.x + offset;
-    let top = mousePos.y - 10;
-    let transform = 'translate(0, 0)';
-
-    if (containerSize.w && (left + maxWidth + pad) > containerSize.w) {
-      left = mousePos.x - offset;
-      transform = 'translate(-100%, 0)';
-    }
-
-    if (containerSize.h) {
-      top = clamp(top, pad, Math.max(pad, containerSize.h - 140));
-    }
-
-    return { left, top, maxWidth, transform };
-  }, [mousePos.x, mousePos.y, containerSize.w, containerSize.h]);
-
-  const dateRange = useMemo(() => {
-    const days = PERIOD_DAYS[period] ?? 30;
-    const window = dailyData.slice(-days);
-    return {
-      start: window[0]?.date,
-      end: window[window.length - 1]?.date,
-      days,
-    };
-  }, [period]);
-
-  const filteredCats = useMemo(() => {
-    const start = dateRange.start;
-    const end = dateRange.end;
-    if (!start || !end) return [];
-
-    return catEvents.filter((c) => {
-      if (c.date < start || c.date > end) return false;
-      if (country !== 'ALL') {
-        if (c.countryCode !== country) return false;
-      } else if (continent !== 'ALL') {
-        if (c.continent !== continent) return false;
-      }
-      if (platform !== 'ALL' && c.platform !== platform) return false;
-      if (catType !== 'ALL' && c.catType !== catType) return false;
-      return true;
-    });
-  }, [
-    dateRange.start,
-    dateRange.end,
-    continent,
-    country,
-    platform,
-    catType,
-  ]);
-
-  const catsByRegion = useMemo(() => {
-    const map = {};
-    filteredCats.forEach((c) => {
-      map[c.regionId] = (map[c.regionId] || 0) + 1;
-    });
-    return map;
-  }, [filteredCats]);
-
-  const catsByCity = useMemo(() => {
-    const map = {};
-    filteredCats.forEach((c) => {
-      map[c.cityId] = (map[c.cityId] || 0) + 1;
-    });
-    return map;
-  }, [filteredCats]);
-
-  const regionMarkers = useMemo(() => {
-    return CAT_REGIONS
-      .map((r) => ({
-        id: r.id,
-        name: r.name,
-        countryCode: r.countryCode,
-        coordinates: r.center,
-        count: catsByRegion[r.id] || 0,
-      }))
-      .filter((r) => r.count > 0);
-  }, [catsByRegion]);
-
-  const cityMarkers = useMemo(() => {
-    return CAT_CITIES
-      .map((c) => ({
-        id: c.id,
-        name: c.name,
-        countryCode: c.countryCode,
-        regionId: c.regionId,
-        coordinates: c.coordinates,
-        count: catsByCity[c.id] || 0,
-      }))
-      .filter((c) => c.count > 0);
-  }, [catsByCity]);
-
-  const catsToRender = useMemo(() => {
-    if (position.zoom < CAT_ZOOM_MIN) return [];
-
-    let base = filteredCats;
-    if (focus?.type === 'city') base = base.filter((c) => c.cityId === focus.id);
-    else if (focus?.type === 'region') base = base.filter((c) => c.regionId === focus.id);
-    else base = pickCatsInRadius(base, position.coordinates, position.zoom);
-
-    const MAX = 1500;
-    if (base.length <= MAX) return base;
-    const step = Math.ceil(base.length / MAX);
-    return base.filter((_, idx) => idx % step === 0);
-  }, [position.zoom, position.coordinates, filteredCats, focus]);
-
-  const showRegions = position.zoom >= REGION_ZOOM_MIN && position.zoom < CITY_ZOOM_MIN;
-  const showCities = position.zoom >= CITY_ZOOM_MIN && position.zoom < CAT_ZOOM_MIN;
-  const showCats = position.zoom >= CAT_ZOOM_MIN;
+  const handleBackToWorld = () => {
+    onChange?.({ ...filters, country: 'ALL' });
+    setTooltip(null);
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 relative">
+      {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-gray-700">Cats Map</h3>
+        {isCountryView ? (
+          <nav className="flex items-center gap-1 text-sm">
+            <button
+              onClick={handleBackToWorld}
+              className="text-blue-600 hover:underline cursor-pointer font-medium"
+            >
+              World
+            </button>
+            <span className="text-gray-400">&rsaquo;</span>
+            <span className="text-gray-700 font-semibold">
+              {selectedCountry?.name || country}
+            </span>
+          </nav>
+        ) : (
+          <h3 className="text-sm font-semibold text-gray-700">Cats Map</h3>
+        )}
       </div>
 
+      {/* Map */}
       <div className="relative" onMouseMove={handleMouseMove}>
-        {/* Controls */}
-        <div className="absolute left-3 top-3 z-10 flex flex-col gap-2">
-          <button
-            type="button"
-            className="w-9 h-9 rounded-lg bg-white/90 border border-gray-200 text-gray-700 text-sm font-semibold shadow-sm hover:bg-white"
-            onClick={() =>
-              setPosition((p) => ({ ...p, zoom: clamp(p.zoom * 1.35, 1, MAX_ZOOM) }))
-            }
-            title="Zoom in"
-          >
-            +
-          </button>
-          <button
-            type="button"
-            className="w-9 h-9 rounded-lg bg-white/90 border border-gray-200 text-gray-700 text-sm font-semibold shadow-sm hover:bg-white"
-            onClick={() =>
-              setPosition((p) => ({ ...p, zoom: clamp(p.zoom / 1.35, 1, MAX_ZOOM) }))
-            }
-            title="Zoom out"
-          >
-            −
-          </button>
-          <button
-            type="button"
-            className="w-9 h-9 rounded-lg bg-white/90 border border-gray-200 text-gray-700 text-[10px] font-semibold shadow-sm hover:bg-white"
-            onClick={() => {
-              setFocus(null);
-              setPosition(geoTarget);
-            }}
-            title="Reset view"
-          >
-            Reset
-          </button>
-        </div>
-
         <ComposableMap
           projection="geoMercator"
-          projectionConfig={{ scale: 135, center: [0, 25] }}
+          projectionConfig={projectionConfig}
           style={{ width: '100%', height: 'auto' }}
         >
-          <ZoomableGroup
-            center={position.coordinates}
-            zoom={position.zoom}
-            minZoom={1}
-            maxZoom={MAX_ZOOM}
-            onMoveEnd={setPosition}
-          >
-            <Geographies geography={GEO_URL}>
+          {/* Base country layer */}
+          <Geographies geography={GEO_URL}>
             {({ geographies }) =>
               geographies.map((geo) => {
-                const numericCode = String(geo.id);
-                const alpha3 = NUMERIC_TO_ALPHA3[numericCode];
-                const enabled = alpha3 ? enabledCountryCodes.includes(alpha3) : false;
+                const alpha3 = NUMERIC_TO_ALPHA3[String(geo.id)];
                 const info = alpha3 ? countryAgg[alpha3] : null;
-                const value = enabled && info ? info.cats : 0;
+                const isEnabled = alpha3 ? enabledCodes.has(alpha3) : false;
+                const value = isEnabled && info ? info.cats : 0;
+                const isSelected = isCountryView && alpha3 === country;
+                const isClickable = !isCountryView && isEnabled && !!info;
 
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    fill={getColor(value)}
-                    stroke="#cbd5e1"
-                    strokeWidth={0.5}
-                      onMouseEnter={() => {
-                        if (!enabled || !alpha3 || !info) return;
+                    fill={
+                      isCountryView
+                        ? isSelected ? '#eef2ff' : '#f1f5f9'
+                        : isEnabled ? getColor(value) : '#f1f5f9'
+                    }
+                    stroke={isSelected ? '#3b82f6' : '#cbd5e1'}
+                    strokeWidth={isSelected ? 1.5 : 0.5}
+                    onMouseEnter={() => {
+                      if (isClickable) {
                         setTooltip({
                           type: 'country',
-                          code: alpha3,
                           name: info.name,
                           users: info.users,
                           cats: info.cats,
                           shots: info.shots,
                         });
-                      }}
+                      }
+                    }}
+                    onMouseLeave={() => setTooltip(null)}
+                    onClick={() => {
+                      if (isClickable) handleCountryClick(alpha3);
+                    }}
+                    style={{
+                      default: {
+                        outline: 'none',
+                        cursor: isClickable ? 'pointer' : 'default',
+                      },
+                      hover: {
+                        outline: 'none',
+                        fill: isClickable ? '#93c5fd' : undefined,
+                      },
+                      pressed: { outline: 'none' },
+                    }}
+                  />
+                );
+              })
+            }
+          </Geographies>
+
+          {/* Crimea overlay — always render as Russia's color */}
+          <Geographies geography={CRIMEA_GEO}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const rusInfo = countryAgg['RUS'];
+                const isRusEnabled = enabledCodes.has('RUS');
+                const value = isRusEnabled && rusInfo ? rusInfo.cats : 0;
+
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    fill={
+                      isCountryView
+                        ? country === 'RUS' ? '#eef2ff' : '#f1f5f9'
+                        : isRusEnabled ? getColor(value) : '#f1f5f9'
+                    }
+                    stroke={country === 'RUS' ? '#3b82f6' : '#cbd5e1'}
+                    strokeWidth={country === 'RUS' ? 1.5 : 0.5}
+                    onMouseEnter={() => {
+                      if (!isCountryView && isRusEnabled && rusInfo) {
+                        setTooltip({
+                          type: 'country',
+                          name: 'Russia',
+                          users: rusInfo.users,
+                          cats: rusInfo.cats,
+                          shots: rusInfo.shots,
+                        });
+                      }
+                    }}
+                    onMouseLeave={() => setTooltip(null)}
+                    onClick={() => {
+                      if (!isCountryView && isRusEnabled && rusInfo) handleCountryClick('RUS');
+                    }}
+                    style={{
+                      default: {
+                        outline: 'none',
+                        cursor: !isCountryView && isRusEnabled && rusInfo ? 'pointer' : 'default',
+                      },
+                      hover: {
+                        outline: 'none',
+                        fill: !isCountryView && isRusEnabled && rusInfo ? '#93c5fd' : undefined,
+                      },
+                      pressed: { outline: 'none' },
+                    }}
+                  />
+                );
+              })
+            }
+          </Geographies>
+
+          {/* Admin-1 layer — only shown in country drill-down */}
+          {isCountryView && (
+            <Geographies geography={ADMIN1_URL}>
+              {({ geographies }) => {
+                // Filter to admin-1 features for the selected country
+                const countryGeos = geographies.filter(
+                  (geo) => geo.properties.adm0_a3 === country,
+                );
+
+                return countryGeos.map((geo) => {
+                  const isoCode = geo.properties.iso_3166_2;
+                  const regionInfo = regionData[isoCode];
+                  const cats = regionInfo?.cats ?? 0;
+                  const displayName = regionInfo?.name || geo.properties.name;
+
+                  return (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      fill={getRegionColor(cats)}
+                      stroke="rgba(255,255,255,0.7)"
+                      strokeWidth={0.5}
+                      onMouseEnter={() =>
+                        setTooltip({
+                          type: 'region',
+                          name: displayName,
+                          users: regionInfo?.users ?? 0,
+                          cats,
+                          shots: regionInfo?.shots ?? 0,
+                        })
+                      }
                       onMouseLeave={() => setTooltip(null)}
+                      onClick={handleBackToWorld}
                       style={{
-                        default: { outline: 'none' },
-                        hover: { outline: 'none', fill: enabled && value ? '#93c5fd' : '#e2e8f0' },
+                        default: { outline: 'none', cursor: 'pointer' },
+                        hover: {
+                          outline: 'none',
+                          fill: '#93c5fd',
+                        },
                         pressed: { outline: 'none' },
                       }}
                     />
                   );
-                })
-              }
+                });
+              }}
             </Geographies>
-
-            {/* Regions */}
-            {showRegions && regionMarkers.map((r) => (
-              <Marker key={`region-${r.id}`} coordinates={r.coordinates}>
-                <circle
-                  r={markerRadius(r.count, 'region')}
-                  fill="rgba(59,130,246,0.20)"
-                  stroke="rgba(30,64,175,0.55)"
-                  strokeWidth={1}
-                  style={{ cursor: 'pointer' }}
-                  onMouseEnter={() => setTooltip({ type: 'region', id: r.id, name: r.name, count: r.count })}
-                  onMouseLeave={() => setTooltip(null)}
-                  onClick={() => {
-                    setFocus({ type: 'region', id: r.id });
-                    setPosition({ coordinates: r.coordinates, zoom: 4.2 });
-                  }}
-                />
-              </Marker>
-            ))}
-
-            {/* Cities */}
-            {showCities && cityMarkers.map((c) => (
-              <Marker key={`city-${c.id}`} coordinates={c.coordinates}>
-                <circle
-                  r={markerRadius(c.count, 'city')}
-                  fill="rgba(249,115,22,0.18)"
-                  stroke="rgba(154,52,18,0.55)"
-                  strokeWidth={1}
-                  style={{ cursor: 'pointer' }}
-                  onMouseEnter={() => setTooltip({ type: 'city', id: c.id, name: c.name, count: c.count })}
-                  onMouseLeave={() => setTooltip(null)}
-                  onClick={() => {
-                    setFocus({ type: 'city', id: c.id });
-                    setPosition({ coordinates: c.coordinates, zoom: 6.6 });
-                  }}
-                />
-              </Marker>
-            ))}
-
-            {/* Cats */}
-            {showCats && catsToRender.map((cat) => {
-              const fill = cat.catType === 'Home' ? '#a855f7' : '#f97316';
-              const stroke = cat.platform === 'iOS' ? '#3b82f6' : '#22c55e';
-              const city = CITY_BY_ID[cat.cityId];
-              const region = REGION_BY_ID[cat.regionId];
-
-              return (
-                <Marker key={cat.id} coordinates={cat.coordinates}>
-                  <circle
-                    r={1.9}
-                    fill={fill}
-                    stroke={stroke}
-                    strokeWidth={0.8}
-                    opacity={0.9}
-                    onMouseEnter={() =>
-                      setTooltip({
-                        type: 'cat',
-                        id: cat.id,
-                        city: city?.name,
-                        region: region?.name,
-                        country: cat.countryCode,
-                        catType: cat.catType,
-                        platform: cat.platform,
-                      })
-                    }
-                    onMouseLeave={() => setTooltip(null)}
-                  />
-                </Marker>
-              );
-            })}
-          </ZoomableGroup>
+          )}
         </ComposableMap>
 
+        {/* Tooltip */}
         {tooltip && (
           <div
-            className="absolute bg-gray-900 text-white text-xs px-3 py-2 rounded shadow-lg pointer-events-none z-10 whitespace-normal break-words leading-4"
-            style={tooltipStyle}
+            className="absolute bg-gray-900 text-white text-xs px-2.5 py-1.5 rounded shadow-lg pointer-events-none z-10 whitespace-nowrap"
+            style={{ left: mousePos.x + 12, top: mousePos.y - 10 }}
           >
-            {tooltip.type === 'country' && (
-              <div className="flex flex-col gap-0.5">
-                <div className="font-semibold">
-                  {tooltip.code}
-                  <span className="font-normal text-gray-300"> {tooltip.name}</span>
-                </div>
-                <div className="text-gray-300">
-                  Cats <span className="text-white font-medium">{formatNumber(tooltip.cats)}</span>
-                </div>
-                <div className="text-gray-300">
-                  Users <span className="text-white font-medium">{formatNumber(tooltip.users)}</span>
-                </div>
-                <div className="text-gray-300">
-                  Shots <span className="text-white font-medium">{formatNumber(tooltip.shots)}</span>
-                </div>
-              </div>
-            )}
-            {tooltip.type === 'region' && (
-              <div className="flex flex-col gap-0.5">
-                <div className="font-semibold">{tooltip.name}</div>
-                <div className="text-gray-300">
-                  Cats <span className="text-white font-medium">{formatNumber(tooltip.count)}</span>
-                </div>
-              </div>
-            )}
-            {tooltip.type === 'city' && (
-              <div className="flex flex-col gap-0.5">
-                <div className="font-semibold">{tooltip.name}</div>
-                <div className="text-gray-300">
-                  Cats <span className="text-white font-medium">{formatNumber(tooltip.count)}</span>
-                </div>
-              </div>
-            )}
-            {tooltip.type === 'cat' && (
-              <div className="flex flex-col gap-0.5">
-                <div className="font-semibold">{tooltip.id}</div>
-                <div className="text-gray-300">
-                  {tooltip.country}
-                  {tooltip.region ? <span className="text-gray-400"> · {tooltip.region}</span> : null}
-                  {tooltip.city ? <span className="text-gray-400"> · {tooltip.city}</span> : null}
-                </div>
-                <div className="text-gray-300">
-                  Type <span className="text-white font-medium">{tooltip.catType}</span>
-                </div>
-                <div className="text-gray-300">
-                  Platform <span className="text-white font-medium">{tooltip.platform}</span>
-                </div>
-              </div>
-            )}
+            <span className="font-semibold">{tooltip.name}</span>
+            <span className="text-gray-400 mx-1">|</span>
+            Users {formatNumber(tooltip.users)}
+            <span className="text-gray-400 mx-1">&middot;</span>
+            Cats {formatNumber(tooltip.cats)}
+            <span className="text-gray-400 mx-1">&middot;</span>
+            Shots {formatNumber(tooltip.shots)}
           </div>
         )}
       </div>
 
+      {/* Legend */}
       <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
         <span>Low</span>
         <div
@@ -505,8 +404,10 @@ export default function WorldHeatmap({ filters }) {
         <span>High</span>
       </div>
 
-      <div className="mt-2 text-[11px] text-gray-400">
-        Drag to pan, scroll to zoom. Window: last {dateRange.days}d.
+      <div className="mt-1 text-[11px] text-gray-400">
+        {!isCountryView
+          ? 'Click a country to explore.'
+          : 'Click a region to go back.'}
       </div>
     </div>
   );

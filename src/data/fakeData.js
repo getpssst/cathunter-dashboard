@@ -71,352 +71,406 @@ export const CONTINENTS = [
 export const COUNTRIES = [
   {
     code: 'USA', name: 'United States', continent: 'North America',
-    userWeight: 100, catsPerUser: 1.9, shotsPerCat: 4.8, iosShare: 0.58, strayShare: 0.55,
+    userWeight: 100, catsPerUser: 1.4, shotsPerCat: 3.2, iosShare: 0.58, strayShare: 0.45,
     center: [-98, 39],
   },
   {
     code: 'CAN', name: 'Canada', continent: 'North America',
-    userWeight: 15, catsPerUser: 1.7, shotsPerCat: 4.2, iosShare: 0.56, strayShare: 0.50,
+    userWeight: 15, catsPerUser: 1.0, shotsPerCat: 2.8, iosShare: 0.56, strayShare: 0.30,
     center: [-106, 56],
   },
   {
     code: 'MEX', name: 'Mexico', continent: 'North America',
-    userWeight: 20, catsPerUser: 2.2, shotsPerCat: 6.6, iosShare: 0.18, strayShare: 0.70,
+    userWeight: 20, catsPerUser: 1.6, shotsPerCat: 3.0, iosShare: 0.18, strayShare: 0.70,
     center: [-102, 23],
   },
   {
     code: 'BRA', name: 'Brazil', continent: 'South America',
-    userWeight: 45, catsPerUser: 2.1, shotsPerCat: 6.0, iosShare: 0.20, strayShare: 0.68,
+    userWeight: 45, catsPerUser: 1.5, shotsPerCat: 3.0, iosShare: 0.20, strayShare: 0.65,
     center: [-52, -10],
   },
   {
     code: 'ARG', name: 'Argentina', continent: 'South America',
-    userWeight: 8, catsPerUser: 1.9, shotsPerCat: 5.2, iosShare: 0.15, strayShare: 0.60,
+    userWeight: 8, catsPerUser: 1.3, shotsPerCat: 2.8, iosShare: 0.15, strayShare: 0.58,
     center: [-64, -34],
   },
   {
     code: 'CHL', name: 'Chile', continent: 'South America',
-    userWeight: 4, catsPerUser: 1.7, shotsPerCat: 4.6, iosShare: 0.22, strayShare: 0.58,
+    userWeight: 4, catsPerUser: 1.2, shotsPerCat: 2.6, iosShare: 0.22, strayShare: 0.52,
     center: [-71, -35],
   },
   {
     code: 'COL', name: 'Colombia', continent: 'South America',
-    userWeight: 7, catsPerUser: 1.8, shotsPerCat: 5.0, iosShare: 0.16, strayShare: 0.62,
+    userWeight: 7, catsPerUser: 1.4, shotsPerCat: 2.8, iosShare: 0.16, strayShare: 0.65,
     center: [-74, 4.7],
   },
   {
     code: 'GBR', name: 'United Kingdom', continent: 'Europe',
-    userWeight: 30, catsPerUser: 1.4, shotsPerCat: 3.8, iosShare: 0.52, strayShare: 0.40,
+    userWeight: 30, catsPerUser: 0.9, shotsPerCat: 3.0, iosShare: 0.52, strayShare: 0.15,
     center: [-2, 54],
   },
   {
     code: 'DEU', name: 'Germany', continent: 'Europe',
-    userWeight: 25, catsPerUser: 1.3, shotsPerCat: 3.5, iosShare: 0.35, strayShare: 0.38,
+    userWeight: 25, catsPerUser: 0.8, shotsPerCat: 2.8, iosShare: 0.35, strayShare: 0.18,
     center: [10, 51],
   },
   {
     code: 'FRA', name: 'France', continent: 'Europe',
-    userWeight: 22, catsPerUser: 1.5, shotsPerCat: 4.2, iosShare: 0.40, strayShare: 0.42,
+    userWeight: 22, catsPerUser: 1.0, shotsPerCat: 3.0, iosShare: 0.40, strayShare: 0.28,
     center: [2, 46],
   },
   {
     code: 'ESP', name: 'Spain', continent: 'Europe',
-    userWeight: 15, catsPerUser: 1.4, shotsPerCat: 3.9, iosShare: 0.38, strayShare: 0.50,
+    userWeight: 15, catsPerUser: 1.1, shotsPerCat: 2.8, iosShare: 0.38, strayShare: 0.42,
     center: [-3, 40],
   },
   {
     code: 'ITA', name: 'Italy', continent: 'Europe',
-    userWeight: 17, catsPerUser: 1.4, shotsPerCat: 3.7, iosShare: 0.32, strayShare: 0.55,
+    userWeight: 17, catsPerUser: 1.2, shotsPerCat: 3.0, iosShare: 0.32, strayShare: 0.45,
     center: [12.5, 42.5],
   },
   {
     code: 'RUS', name: 'Russia', continent: 'Europe',
-    userWeight: 28, catsPerUser: 2.0, shotsPerCat: 5.2, iosShare: 0.30, strayShare: 0.66,
+    userWeight: 28, catsPerUser: 1.4, shotsPerCat: 3.2, iosShare: 0.30, strayShare: 0.58,
     center: [100, 60],
   },
   {
     code: 'TUR', name: 'Turkey', continent: 'Europe',
-    userWeight: 16, catsPerUser: 2.6, shotsPerCat: 8.2, iosShare: 0.22, strayShare: 0.80,
+    userWeight: 16, catsPerUser: 2.0, shotsPerCat: 4.5, iosShare: 0.22, strayShare: 0.85,
     center: [35, 39],
   },
   {
     code: 'IND', name: 'India', continent: 'Asia',
-    userWeight: 80, catsPerUser: 2.4, shotsPerCat: 6.6, iosShare: 0.08, strayShare: 0.75,
+    userWeight: 80, catsPerUser: 1.8, shotsPerCat: 3.0, iosShare: 0.08, strayShare: 0.80,
     center: [78, 22],
   },
   {
     code: 'CHN', name: 'China', continent: 'Asia',
-    userWeight: 60, catsPerUser: 1.2, shotsPerCat: 3.1, iosShare: 0.25, strayShare: 0.55,
+    userWeight: 60, catsPerUser: 1.2, shotsPerCat: 2.8, iosShare: 0.25, strayShare: 0.50,
     center: [104, 35],
   },
   {
     code: 'JPN', name: 'Japan', continent: 'Asia',
-    userWeight: 35, catsPerUser: 2.2, shotsPerCat: 7.8, iosShare: 0.70, strayShare: 0.35,
+    userWeight: 35, catsPerUser: 1.1, shotsPerCat: 5.0, iosShare: 0.70, strayShare: 0.35,
     center: [138, 37],
   },
   {
     code: 'KOR', name: 'South Korea', continent: 'Asia',
-    userWeight: 18, catsPerUser: 1.9, shotsPerCat: 6.0, iosShare: 0.30, strayShare: 0.45,
+    userWeight: 18, catsPerUser: 1.1, shotsPerCat: 3.5, iosShare: 0.30, strayShare: 0.38,
     center: [127.5, 36.5],
   },
   {
     code: 'IDN', name: 'Indonesia', continent: 'Asia',
-    userWeight: 40, catsPerUser: 2.2, shotsPerCat: 7.2, iosShare: 0.10, strayShare: 0.72,
+    userWeight: 40, catsPerUser: 1.7, shotsPerCat: 2.8, iosShare: 0.10, strayShare: 0.75,
     center: [117, -2],
   },
   {
     code: 'THA', name: 'Thailand', continent: 'Asia',
-    userWeight: 14, catsPerUser: 2.1, shotsPerCat: 6.2, iosShare: 0.25, strayShare: 0.70,
+    userWeight: 14, catsPerUser: 1.6, shotsPerCat: 3.2, iosShare: 0.25, strayShare: 0.72,
     center: [101, 15],
   },
   {
     code: 'PHL', name: 'Philippines', continent: 'Asia',
-    userWeight: 13, catsPerUser: 1.9, shotsPerCat: 6.4, iosShare: 0.12, strayShare: 0.70,
+    userWeight: 13, catsPerUser: 1.5, shotsPerCat: 2.8, iosShare: 0.12, strayShare: 0.68,
     center: [122, 12],
   },
   {
     code: 'NGA', name: 'Nigeria', continent: 'Africa',
-    userWeight: 10, catsPerUser: 2.5, shotsPerCat: 8.0, iosShare: 0.06, strayShare: 0.78,
+    userWeight: 10, catsPerUser: 2.2, shotsPerCat: 2.2, iosShare: 0.06, strayShare: 0.78,
     center: [8, 9],
   },
   {
     code: 'ZAF', name: 'South Africa', continent: 'Africa',
-    userWeight: 6, catsPerUser: 1.7, shotsPerCat: 5.4, iosShare: 0.20, strayShare: 0.55,
+    userWeight: 6, catsPerUser: 1.3, shotsPerCat: 2.8, iosShare: 0.20, strayShare: 0.48,
     center: [25, -29],
   },
   {
     code: 'EGY', name: 'Egypt', continent: 'Africa',
-    userWeight: 9, catsPerUser: 2.2, shotsPerCat: 7.0, iosShare: 0.12, strayShare: 0.82,
+    userWeight: 9, catsPerUser: 2.0, shotsPerCat: 4.0, iosShare: 0.12, strayShare: 0.85,
     center: [30, 26],
   },
   {
     code: 'AUS', name: 'Australia', continent: 'Oceania',
-    userWeight: 12, catsPerUser: 1.8, shotsPerCat: 5.1, iosShare: 0.55, strayShare: 0.35,
+    userWeight: 12, catsPerUser: 1.0, shotsPerCat: 2.8, iosShare: 0.55, strayShare: 0.25,
     center: [133, -25],
   },
 ];
 
-// --- Cat geo taxonomy (cat regions + cat cities) ---
-export const CAT_REGIONS = [
-  { id: 'USA-W', countryCode: 'USA', name: 'Catifornia', center: [-120.0, 36.5] },
-  { id: 'USA-C', countryCode: 'USA', name: 'Midpurr', center: [-93.0, 41.5] },
-  { id: 'USA-E', countryCode: 'USA', name: 'Meow York', center: [-77.0, 40.5] },
+// --- Real admin-1 regions (states, provinces, oblasts) ---
+export const ADMIN_REGIONS = [
+  // USA — major states
+  { id: 'US-CA', countryCode: 'USA', name: 'California', isoCode: 'US-CA', center: [-119.4, 36.8], weight: 12 },
+  { id: 'US-TX', countryCode: 'USA', name: 'Texas', isoCode: 'US-TX', center: [-99.9, 31.0], weight: 10 },
+  { id: 'US-NY', countryCode: 'USA', name: 'New York', isoCode: 'US-NY', center: [-75.5, 43.0], weight: 10 },
+  { id: 'US-FL', countryCode: 'USA', name: 'Florida', isoCode: 'US-FL', center: [-81.5, 27.8], weight: 8 },
+  { id: 'US-IL', countryCode: 'USA', name: 'Illinois', isoCode: 'US-IL', center: [-89.4, 40.0], weight: 6 },
+  { id: 'US-PA', countryCode: 'USA', name: 'Pennsylvania', isoCode: 'US-PA', center: [-77.2, 41.2], weight: 5 },
+  { id: 'US-OH', countryCode: 'USA', name: 'Ohio', isoCode: 'US-OH', center: [-82.9, 40.4], weight: 4 },
+  { id: 'US-WA', countryCode: 'USA', name: 'Washington', isoCode: 'US-WA', center: [-120.7, 47.8], weight: 4 },
 
-  { id: 'CAN-W', countryCode: 'CAN', name: 'Purrific Coast', center: [-125.0, 52.0] },
-  { id: 'CAN-C', countryCode: 'CAN', name: 'Maple Plains', center: [-97.0, 53.0] },
-  { id: 'CAN-E', countryCode: 'CAN', name: 'Meowntreal', center: [-71.0, 46.0] },
+  // CAN — provinces
+  { id: 'CA-ON', countryCode: 'CAN', name: 'Ontario', isoCode: 'CA-ON', center: [-85.3, 51.3], weight: 8 },
+  { id: 'CA-QC', countryCode: 'CAN', name: 'Quebec', isoCode: 'CA-QC', center: [-71.2, 46.8], weight: 6 },
+  { id: 'CA-BC', countryCode: 'CAN', name: 'British Columbia', isoCode: 'CA-BC', center: [-124.7, 53.7], weight: 5 },
+  { id: 'CA-AB', countryCode: 'CAN', name: 'Alberta', isoCode: 'CA-AB', center: [-114.4, 53.9], weight: 4 },
 
-  { id: 'MEX-N', countryCode: 'MEX', name: 'Desert Whiskers', center: [-102.0, 25.5] },
-  { id: 'MEX-C', countryCode: 'MEX', name: 'Central Paws', center: [-101.0, 20.5] },
+  // MEX — states
+  { id: 'MX-DIF', countryCode: 'MEX', name: 'Ciudad de Mexico', isoCode: 'MX-DIF', center: [-99.1, 19.4], weight: 9 },
+  { id: 'MX-JAL', countryCode: 'MEX', name: 'Jalisco', isoCode: 'MX-JAL', center: [-103.3, 20.7], weight: 5 },
+  { id: 'MX-NLE', countryCode: 'MEX', name: 'Nuevo Leon', isoCode: 'MX-NLE', center: [-99.9, 25.6], weight: 5 },
+  { id: 'MX-MEX', countryCode: 'MEX', name: 'Mexico State', isoCode: 'MX-MEX', center: [-99.6, 19.4], weight: 7 },
 
-  { id: 'BRA-SE', countryCode: 'BRA', name: 'Purr Paulista', center: [-46.5, -23.0] },
-  { id: 'BRA-NE', countryCode: 'BRA', name: 'Tropic Tails', center: [-38.0, -8.0] },
-  { id: 'BRA-C', countryCode: 'BRA', name: 'Brasilia Belt', center: [-47.8, -15.8] },
+  // BRA — states
+  { id: 'BR-SP', countryCode: 'BRA', name: 'Sao Paulo', isoCode: 'BR-SP', center: [-48.5, -22.3], weight: 10 },
+  { id: 'BR-RJ', countryCode: 'BRA', name: 'Rio de Janeiro', isoCode: 'BR-RJ', center: [-43.2, -22.9], weight: 7 },
+  { id: 'BR-MG', countryCode: 'BRA', name: 'Minas Gerais', isoCode: 'BR-MG', center: [-44.7, -18.5], weight: 5 },
+  { id: 'BR-BA', countryCode: 'BRA', name: 'Bahia', isoCode: 'BR-BA', center: [-41.7, -12.6], weight: 4 },
 
-  { id: 'ARG-P', countryCode: 'ARG', name: 'Pampas Purr', center: [-62.0, -34.0] },
-  { id: 'ARG-N', countryCode: 'ARG', name: 'Andes Whiskers', center: [-65.0, -31.5] },
+  // ARG — provinces
+  { id: 'AR-B', countryCode: 'ARG', name: 'Buenos Aires', isoCode: 'AR-B', center: [-59.5, -36.6], weight: 9 },
+  { id: 'AR-C', countryCode: 'ARG', name: 'CABA', isoCode: 'AR-C', center: [-58.4, -34.6], weight: 6 },
+  { id: 'AR-X', countryCode: 'ARG', name: 'Cordoba', isoCode: 'AR-X', center: [-64.2, -31.4], weight: 4 },
 
-  { id: 'CHL-C', countryCode: 'CHL', name: 'Central Claws', center: [-71.0, -34.5] },
-  { id: 'CHL-S', countryCode: 'CHL', name: 'Southern Paws', center: [-73.0, -36.8] },
+  // CHL — regions
+  { id: 'CL-RM', countryCode: 'CHL', name: 'Santiago Metropolitan', isoCode: 'CL-RM', center: [-70.6, -33.4], weight: 8 },
+  { id: 'CL-VS', countryCode: 'CHL', name: 'Valparaiso', isoCode: 'CL-VS', center: [-71.2, -33.0], weight: 4 },
+  { id: 'CL-BI', countryCode: 'CHL', name: 'Biobio', isoCode: 'CL-BI', center: [-72.7, -37.0], weight: 3 },
 
-  { id: 'COL-A', countryCode: 'COL', name: 'Andean Alley', center: [-74.5, 5.0] },
-  { id: 'COL-P', countryCode: 'COL', name: 'Pacific Purr', center: [-76.5, 3.4] },
+  // COL — departments
+  { id: 'CO-CUN', countryCode: 'COL', name: 'Bogota', isoCode: 'CO-CUN', center: [-74.1, 4.7], weight: 8 },
+  { id: 'CO-ANT', countryCode: 'COL', name: 'Antioquia', isoCode: 'CO-ANT', center: [-75.6, 7.0], weight: 5 },
+  { id: 'CO-VAC', countryCode: 'COL', name: 'Valle del Cauca', isoCode: 'CO-VAC', center: [-76.5, 3.4], weight: 4 },
 
-  { id: 'GBR-S', countryCode: 'GBR', name: 'South Meowland', center: [-1.0, 51.0] },
-  { id: 'GBR-N', countryCode: 'GBR', name: 'North Whiskers', center: [-2.5, 54.5] },
+  // GBR — major areas (Natural Earth uses local authorities; we pick representative ones)
+  { id: 'GB-LND', countryCode: 'GBR', name: 'London', isoCode: 'GB-LND', center: [-0.1, 51.5], weight: 10 },
+  { id: 'GB-MAN', countryCode: 'GBR', name: 'Manchester', isoCode: 'GB-MAN', center: [-2.2, 53.5], weight: 4 },
+  { id: 'GB-EDH', countryCode: 'GBR', name: 'Edinburgh', isoCode: 'GB-EDH', center: [-3.2, 55.9], weight: 3 },
 
-  { id: 'DEU-N', countryCode: 'DEU', name: 'Nordic Naps', center: [10.0, 53.0] },
-  { id: 'DEU-S', countryCode: 'DEU', name: 'Bavarian Beans', center: [11.0, 48.5] },
+  // DEU — Bundeslander
+  { id: 'DE-BY', countryCode: 'DEU', name: 'Bavaria', isoCode: 'DE-BY', center: [11.4, 48.8], weight: 7 },
+  { id: 'DE-NW', countryCode: 'DEU', name: 'North Rhine-Westphalia', isoCode: 'DE-NW', center: [7.6, 51.4], weight: 8 },
+  { id: 'DE-BE', countryCode: 'DEU', name: 'Berlin', isoCode: 'DE-BE', center: [13.4, 52.5], weight: 5 },
+  { id: 'DE-HH', countryCode: 'DEU', name: 'Hamburg', isoCode: 'DE-HH', center: [10.0, 53.6], weight: 3 },
 
-  { id: 'FRA-N', countryCode: 'FRA', name: 'Paris Paws', center: [2.3, 48.9] },
-  { id: 'FRA-S', countryCode: 'FRA', name: 'Riviera Roam', center: [5.3, 43.3] },
+  // FRA — departments (Natural Earth uses departments, not regions)
+  { id: 'FR-75', countryCode: 'FRA', name: 'Paris', isoCode: 'FR-75', center: [2.3, 48.9], weight: 9 },
+  { id: 'FR-69', countryCode: 'FRA', name: 'Rhone', isoCode: 'FR-69', center: [4.8, 45.8], weight: 5 },
+  { id: 'FR-13', countryCode: 'FRA', name: 'Bouches-du-Rhone', isoCode: 'FR-13', center: [5.1, 43.5], weight: 4 },
 
-  { id: 'ESP-C', countryCode: 'ESP', name: 'Castile Cats', center: [-3.7, 40.4] },
-  { id: 'ESP-E', countryCode: 'ESP', name: 'Catalan Claws', center: [2.2, 41.4] },
+  // ESP — provinces (Natural Earth uses provinces)
+  { id: 'ES-M', countryCode: 'ESP', name: 'Madrid', isoCode: 'ES-M', center: [-3.7, 40.4], weight: 8 },
+  { id: 'ES-B', countryCode: 'ESP', name: 'Barcelona', isoCode: 'ES-B', center: [2.2, 41.4], weight: 7 },
+  { id: 'ES-SE', countryCode: 'ESP', name: 'Sevilla', isoCode: 'ES-SE', center: [-5.9, 37.4], weight: 5 },
 
-  { id: 'ITA-N', countryCode: 'ITA', name: 'Northern Naps', center: [9.2, 45.3] },
-  { id: 'ITA-C', countryCode: 'ITA', name: 'Roman Roam', center: [12.5, 41.9] },
-  { id: 'ITA-S', countryCode: 'ITA', name: 'Napoli Nights', center: [14.3, 40.9] },
+  // ITA — provinces (Natural Earth uses provinces)
+  { id: 'IT-MI', countryCode: 'ITA', name: 'Milano', isoCode: 'IT-MI', center: [9.2, 45.5], weight: 8 },
+  { id: 'IT-RM', countryCode: 'ITA', name: 'Roma', isoCode: 'IT-RM', center: [12.5, 41.9], weight: 6 },
+  { id: 'IT-NA', countryCode: 'ITA', name: 'Napoli', isoCode: 'IT-NA', center: [14.3, 40.9], weight: 5 },
 
-  { id: 'RUS-W', countryCode: 'RUS', name: 'Western Whiskers', center: [34.0, 57.0] },
-  { id: 'RUS-S', countryCode: 'RUS', name: 'Siberian Snooze', center: [83.0, 55.0] },
+  // RUS — federal subjects
+  { id: 'RU-MOW', countryCode: 'RUS', name: 'Moscow', isoCode: 'RU-MOW', center: [37.6, 55.8], weight: 10 },
+  { id: 'RU-SPE', countryCode: 'RUS', name: 'Saint Petersburg', isoCode: 'RU-SPE', center: [30.3, 59.9], weight: 6 },
+  { id: 'RU-KDA', countryCode: 'RUS', name: 'Krasnodar Krai', isoCode: 'RU-KDA', center: [39.7, 45.3], weight: 4 },
+  { id: 'RU-NVS', countryCode: 'RUS', name: 'Novosibirsk Oblast', isoCode: 'RU-NVS', center: [78.0, 55.0], weight: 3 },
 
-  { id: 'TUR-M', countryCode: 'TUR', name: 'Marmara Meows', center: [29.0, 41.0] },
-  { id: 'TUR-A', countryCode: 'TUR', name: 'Anatolian Alley', center: [32.8, 39.9] },
+  // RUS — Crimea & Sevastopol
+  { id: 'RU-CR', countryCode: 'RUS', name: 'Crimea', isoCode: 'UA-43', center: [34.1, 44.9], weight: 3 },
+  { id: 'RU-SEV', countryCode: 'RUS', name: 'Sevastopol', isoCode: 'UA-40', center: [33.5, 44.6], weight: 2 },
 
-  { id: 'IND-N', countryCode: 'IND', name: 'North Purr', center: [77.2, 28.6] },
-  { id: 'IND-W', countryCode: 'IND', name: 'West Whiskers', center: [72.9, 19.1] },
-  { id: 'IND-S', countryCode: 'IND', name: 'South Snooze', center: [77.6, 13.0] },
+  // TUR — provinces (iller)
+  { id: 'TR-34', countryCode: 'TUR', name: 'Istanbul', isoCode: 'TR-34', center: [29.0, 41.0], weight: 10 },
+  { id: 'TR-06', countryCode: 'TUR', name: 'Ankara', isoCode: 'TR-06', center: [32.9, 39.9], weight: 6 },
+  { id: 'TR-35', countryCode: 'TUR', name: 'Izmir', isoCode: 'TR-35', center: [27.1, 38.4], weight: 5 },
+  { id: 'TR-07', countryCode: 'TUR', name: 'Antalya', isoCode: 'TR-07', center: [30.7, 36.9], weight: 4 },
 
-  { id: 'CHN-N', countryCode: 'CHN', name: 'Northern Paws', center: [116.4, 39.9] },
-  { id: 'CHN-E', countryCode: 'CHN', name: 'Eastern Tails', center: [121.5, 31.2] },
-  { id: 'CHN-S', countryCode: 'CHN', name: 'Southern Claws', center: [113.3, 23.1] },
+  // IND — states
+  { id: 'IN-MH', countryCode: 'IND', name: 'Maharashtra', isoCode: 'IN-MH', center: [75.7, 19.7], weight: 9 },
+  { id: 'IN-DL', countryCode: 'IND', name: 'Delhi', isoCode: 'IN-DL', center: [77.2, 28.6], weight: 7 },
+  { id: 'IN-KA', countryCode: 'IND', name: 'Karnataka', isoCode: 'IN-KA', center: [75.7, 15.3], weight: 6 },
+  { id: 'IN-TN', countryCode: 'IND', name: 'Tamil Nadu', isoCode: 'IN-TN', center: [78.7, 11.1], weight: 5 },
 
-  { id: 'JPN-K', countryCode: 'JPN', name: 'Kanto Kitties', center: [139.7, 35.7] },
-  { id: 'JPN-KS', countryCode: 'JPN', name: 'Kansai Cats', center: [135.5, 34.7] },
-  { id: 'JPN-H', countryCode: 'JPN', name: 'Hokkaido Hugs', center: [141.3, 43.1] },
+  // CHN — provinces
+  { id: 'CN-BJ', countryCode: 'CHN', name: 'Beijing', isoCode: 'CN-BJ', center: [116.4, 39.9], weight: 8 },
+  { id: 'CN-SH', countryCode: 'CHN', name: 'Shanghai', isoCode: 'CN-SH', center: [121.5, 31.2], weight: 8 },
+  { id: 'CN-GD', countryCode: 'CHN', name: 'Guangdong', isoCode: 'CN-GD', center: [113.3, 23.1], weight: 7 },
+  { id: 'CN-ZJ', countryCode: 'CHN', name: 'Zhejiang', isoCode: 'CN-ZJ', center: [120.2, 29.2], weight: 5 },
 
-  { id: 'KOR-S', countryCode: 'KOR', name: 'Seoul Spots', center: [127.0, 37.6] },
-  { id: 'KOR-C', countryCode: 'KOR', name: 'Coastal Claws', center: [129.1, 35.2] },
+  // JPN — regions/prefectures
+  { id: 'JP-13', countryCode: 'JPN', name: 'Tokyo', isoCode: 'JP-13', center: [139.7, 35.7], weight: 10 },
+  { id: 'JP-27', countryCode: 'JPN', name: 'Osaka', isoCode: 'JP-27', center: [135.5, 34.7], weight: 6 },
+  { id: 'JP-01', countryCode: 'JPN', name: 'Hokkaido', isoCode: 'JP-01', center: [143.2, 43.1], weight: 4 },
 
-  { id: 'IDN-J', countryCode: 'IDN', name: 'Java Jumps', center: [107.6, -6.9] },
-  { id: 'IDN-E', countryCode: 'IDN', name: 'East Islands', center: [112.8, -7.3] },
+  // KOR — provinces/cities
+  { id: 'KR-11', countryCode: 'KOR', name: 'Seoul', isoCode: 'KR-11', center: [127.0, 37.6], weight: 10 },
+  { id: 'KR-26', countryCode: 'KOR', name: 'Busan', isoCode: 'KR-26', center: [129.1, 35.2], weight: 5 },
+  { id: 'KR-41', countryCode: 'KOR', name: 'Gyeonggi', isoCode: 'KR-41', center: [127.0, 37.3], weight: 7 },
 
-  { id: 'THA-C', countryCode: 'THA', name: 'Bangkok Beans', center: [100.5, 13.8] },
-  { id: 'THA-N', countryCode: 'THA', name: 'Northern Naps', center: [99.0, 18.7] },
-  { id: 'THA-S', countryCode: 'THA', name: 'Island Purr', center: [98.3, 7.9] },
+  // IDN — provinces
+  { id: 'ID-JK', countryCode: 'IDN', name: 'Jakarta', isoCode: 'ID-JK', center: [106.8, -6.2], weight: 9 },
+  { id: 'ID-JB', countryCode: 'IDN', name: 'West Java', isoCode: 'ID-JB', center: [107.6, -6.9], weight: 6 },
+  { id: 'ID-JT', countryCode: 'IDN', name: 'Central Java', isoCode: 'ID-JT', center: [110.4, -7.2], weight: 5 },
+  { id: 'ID-JI', countryCode: 'IDN', name: 'East Java', isoCode: 'ID-JI', center: [112.8, -7.5], weight: 5 },
 
-  { id: 'PHL-N', countryCode: 'PHL', name: 'Manila Meows', center: [121.0, 14.6] },
-  { id: 'PHL-S', countryCode: 'PHL', name: 'Southern Paws', center: [125.6, 7.2] },
+  // THA — provinces/regions
+  { id: 'TH-10', countryCode: 'THA', name: 'Bangkok', isoCode: 'TH-10', center: [100.5, 13.8], weight: 10 },
+  { id: 'TH-50', countryCode: 'THA', name: 'Chiang Mai', isoCode: 'TH-50', center: [98.9, 18.8], weight: 4 },
+  { id: 'TH-83', countryCode: 'THA', name: 'Phuket', isoCode: 'TH-83', center: [98.3, 7.9], weight: 3 },
 
-  { id: 'NGA-SW', countryCode: 'NGA', name: 'Lagos Laps', center: [3.4, 6.5] },
-  { id: 'NGA-C', countryCode: 'NGA', name: 'Abuja Alley', center: [7.4, 9.1] },
-  { id: 'NGA-N', countryCode: 'NGA', name: 'Kano Kittens', center: [8.5, 12.0] },
+  // PHL — provinces (Natural Earth uses provinces)
+  { id: 'PH-MNL', countryCode: 'PHL', name: 'Manila', isoCode: 'PH-MNL', center: [121.0, 14.6], weight: 9 },
+  { id: 'PH-CEB', countryCode: 'PHL', name: 'Cebu', isoCode: 'PH-CEB', center: [123.8, 10.3], weight: 4 },
+  { id: 'PH-DAV', countryCode: 'PHL', name: 'Davao', isoCode: 'PH-DAV', center: [125.6, 7.2], weight: 3 },
 
-  { id: 'ZAF-G', countryCode: 'ZAF', name: 'Gauteng Groom', center: [28.0, -26.2] },
-  { id: 'ZAF-WC', countryCode: 'ZAF', name: 'Cape Claws', center: [18.4, -33.9] },
-  { id: 'ZAF-KZN', countryCode: 'ZAF', name: 'Durban Doze', center: [31.0, -29.9] },
+  // NGA — states
+  { id: 'NG-LA', countryCode: 'NGA', name: 'Lagos', isoCode: 'NG-LA', center: [3.4, 6.5], weight: 9 },
+  { id: 'NG-FC', countryCode: 'NGA', name: 'Abuja FCT', isoCode: 'NG-FC', center: [7.4, 9.1], weight: 4 },
+  { id: 'NG-KN', countryCode: 'NGA', name: 'Kano', isoCode: 'NG-KN', center: [8.5, 12.0], weight: 4 },
 
-  { id: 'EGY-N', countryCode: 'EGY', name: 'Nile Naps', center: [31.2, 30.0] },
-  { id: 'EGY-C', countryCode: 'EGY', name: 'Alex Alley', center: [29.9, 31.2] },
+  // ZAF — provinces
+  { id: 'ZA-GT', countryCode: 'ZAF', name: 'Gauteng', isoCode: 'ZA-GT', center: [28.0, -26.2], weight: 8 },
+  { id: 'ZA-WC', countryCode: 'ZAF', name: 'Western Cape', isoCode: 'ZA-WC', center: [19.1, -33.2], weight: 5 },
+  { id: 'ZA-NL', countryCode: 'ZAF', name: 'KwaZulu-Natal', isoCode: 'ZA-NL', center: [30.3, -29.0], weight: 4 },
 
-  { id: 'AUS-NSW', countryCode: 'AUS', name: 'Sydney Snooze', center: [151.2, -33.9] },
-  { id: 'AUS-VIC', countryCode: 'AUS', name: 'Melbourne Meows', center: [145.0, -37.8] },
-  { id: 'AUS-QLD', countryCode: 'AUS', name: 'Brisbane Beans', center: [153.0, -27.5] },
+  // EGY — governorates
+  { id: 'EG-C', countryCode: 'EGY', name: 'Cairo', isoCode: 'EG-C', center: [31.2, 30.0], weight: 9 },
+  { id: 'EG-ALX', countryCode: 'EGY', name: 'Alexandria', isoCode: 'EG-ALX', center: [29.9, 31.2], weight: 5 },
+  { id: 'EG-GZ', countryCode: 'EGY', name: 'Giza', isoCode: 'EG-GZ', center: [31.0, 30.0], weight: 4 },
+
+  // AUS — states/territories
+  { id: 'AU-NSW', countryCode: 'AUS', name: 'New South Wales', isoCode: 'AU-NSW', center: [146.9, -32.2], weight: 7 },
+  { id: 'AU-VIC', countryCode: 'AUS', name: 'Victoria', isoCode: 'AU-VIC', center: [145.0, -37.4], weight: 6 },
+  { id: 'AU-QLD', countryCode: 'AUS', name: 'Queensland', isoCode: 'AU-QLD', center: [144.7, -22.6], weight: 4 },
 ];
 
 export const CAT_CITIES = [
   // USA
-  { id: 'USA-SF', countryCode: 'USA', regionId: 'USA-W', name: 'San Meowcisco', coordinates: [-122.4194, 37.7749], weight: 10, spread: 0.25 },
-  { id: 'USA-CHI', countryCode: 'USA', regionId: 'USA-C', name: 'Chi-cat-go', coordinates: [-87.6298, 41.8781], weight: 8, spread: 0.22 },
-  { id: 'USA-NYC', countryCode: 'USA', regionId: 'USA-E', name: 'Meow York', coordinates: [-74.0060, 40.7128], weight: 10, spread: 0.22 },
+  { id: 'USA-SF', countryCode: 'USA', regionId: 'US-CA', name: 'San Francisco', coordinates: [-122.4194, 37.7749], weight: 10, spread: 0.25 },
+  { id: 'USA-CHI', countryCode: 'USA', regionId: 'US-IL', name: 'Chicago', coordinates: [-87.6298, 41.8781], weight: 8, spread: 0.22 },
+  { id: 'USA-NYC', countryCode: 'USA', regionId: 'US-NY', name: 'New York', coordinates: [-74.0060, 40.7128], weight: 10, spread: 0.22 },
 
   // CAN
-  { id: 'CAN-VAN', countryCode: 'CAN', regionId: 'CAN-W', name: 'Vancouvfur', coordinates: [-123.1207, 49.2827], weight: 6, spread: 0.20 },
-  { id: 'CAN-TOR', countryCode: 'CAN', regionId: 'CAN-C', name: 'Torontomeow', coordinates: [-79.3832, 43.6532], weight: 7, spread: 0.18 },
-  { id: 'CAN-MTL', countryCode: 'CAN', regionId: 'CAN-E', name: 'Meowntreal', coordinates: [-73.5673, 45.5017], weight: 5, spread: 0.18 },
+  { id: 'CAN-VAN', countryCode: 'CAN', regionId: 'CA-BC', name: 'Vancouver', coordinates: [-123.1207, 49.2827], weight: 6, spread: 0.20 },
+  { id: 'CAN-TOR', countryCode: 'CAN', regionId: 'CA-ON', name: 'Toronto', coordinates: [-79.3832, 43.6532], weight: 7, spread: 0.18 },
+  { id: 'CAN-MTL', countryCode: 'CAN', regionId: 'CA-QC', name: 'Montreal', coordinates: [-73.5673, 45.5017], weight: 5, spread: 0.18 },
 
   // MEX
-  { id: 'MEX-MTY', countryCode: 'MEX', regionId: 'MEX-N', name: 'Monterrey Purr', coordinates: [-100.3161, 25.6866], weight: 5, spread: 0.20 },
-  { id: 'MEX-GDL', countryCode: 'MEX', regionId: 'MEX-C', name: 'Guadalapawra', coordinates: [-103.3496, 20.6597], weight: 4, spread: 0.22 },
-  { id: 'MEX-MXC', countryCode: 'MEX', regionId: 'MEX-C', name: 'Meowxico City', coordinates: [-99.1332, 19.4326], weight: 7, spread: 0.18 },
+  { id: 'MEX-MTY', countryCode: 'MEX', regionId: 'MX-NLE', name: 'Monterrey', coordinates: [-100.3161, 25.6866], weight: 5, spread: 0.20 },
+  { id: 'MEX-GDL', countryCode: 'MEX', regionId: 'MX-JAL', name: 'Guadalajara', coordinates: [-103.3496, 20.6597], weight: 4, spread: 0.22 },
+  { id: 'MEX-MXC', countryCode: 'MEX', regionId: 'MX-DIF', name: 'Mexico City', coordinates: [-99.1332, 19.4326], weight: 7, spread: 0.18 },
 
   // BRA
-  { id: 'BRA-SAO', countryCode: 'BRA', regionId: 'BRA-SE', name: 'Sao Purrlo', coordinates: [-46.6333, -23.5505], weight: 9, spread: 0.20 },
-  { id: 'BRA-RIO', countryCode: 'BRA', regionId: 'BRA-SE', name: 'Rio de Jameowro', coordinates: [-43.1729, -22.9068], weight: 7, spread: 0.20 },
-  { id: 'BRA-BSB', countryCode: 'BRA', regionId: 'BRA-C', name: 'Brasilia', coordinates: [-47.8825, -15.7942], weight: 4, spread: 0.22 },
+  { id: 'BRA-SAO', countryCode: 'BRA', regionId: 'BR-SP', name: 'Sao Paulo', coordinates: [-46.6333, -23.5505], weight: 9, spread: 0.20 },
+  { id: 'BRA-RIO', countryCode: 'BRA', regionId: 'BR-RJ', name: 'Rio de Janeiro', coordinates: [-43.1729, -22.9068], weight: 7, spread: 0.20 },
+  { id: 'BRA-BSB', countryCode: 'BRA', regionId: 'BR-MG', name: 'Brasilia', coordinates: [-47.8825, -15.7942], weight: 4, spread: 0.22 },
 
   // ARG
-  { id: 'ARG-BUE', countryCode: 'ARG', regionId: 'ARG-P', name: 'Buenos A-meow-res', coordinates: [-58.3816, -34.6037], weight: 7, spread: 0.18 },
-  { id: 'ARG-COR', countryCode: 'ARG', regionId: 'ARG-N', name: 'Cordoba', coordinates: [-64.1888, -31.4201], weight: 4, spread: 0.22 },
-  { id: 'ARG-ROS', countryCode: 'ARG', regionId: 'ARG-P', name: 'Rosario', coordinates: [-60.6505, -32.9442], weight: 3, spread: 0.22 },
+  { id: 'ARG-BUE', countryCode: 'ARG', regionId: 'AR-B', name: 'Buenos Aires', coordinates: [-58.3816, -34.6037], weight: 7, spread: 0.18 },
+  { id: 'ARG-COR', countryCode: 'ARG', regionId: 'AR-X', name: 'Cordoba', coordinates: [-64.1888, -31.4201], weight: 4, spread: 0.22 },
+  { id: 'ARG-ROS', countryCode: 'ARG', regionId: 'AR-B', name: 'Rosario', coordinates: [-60.6505, -32.9442], weight: 3, spread: 0.22 },
 
   // CHL
-  { id: 'CHL-SCL', countryCode: 'CHL', regionId: 'CHL-C', name: 'Santiago', coordinates: [-70.6693, -33.4489], weight: 6, spread: 0.16 },
-  { id: 'CHL-VAP', countryCode: 'CHL', regionId: 'CHL-C', name: 'Valparaiso', coordinates: [-71.6127, -33.0472], weight: 3, spread: 0.18 },
-  { id: 'CHL-CCP', countryCode: 'CHL', regionId: 'CHL-S', name: 'Concepcion', coordinates: [-73.0498, -36.8260], weight: 3, spread: 0.20 },
+  { id: 'CHL-SCL', countryCode: 'CHL', regionId: 'CL-RM', name: 'Santiago', coordinates: [-70.6693, -33.4489], weight: 6, spread: 0.16 },
+  { id: 'CHL-VAP', countryCode: 'CHL', regionId: 'CL-VS', name: 'Valparaiso', coordinates: [-71.6127, -33.0472], weight: 3, spread: 0.18 },
+  { id: 'CHL-CCP', countryCode: 'CHL', regionId: 'CL-BI', name: 'Concepcion', coordinates: [-73.0498, -36.8260], weight: 3, spread: 0.20 },
 
   // COL
-  { id: 'COL-BOG', countryCode: 'COL', regionId: 'COL-A', name: 'Bogota', coordinates: [-74.0721, 4.7110], weight: 6, spread: 0.20 },
-  { id: 'COL-MDE', countryCode: 'COL', regionId: 'COL-A', name: 'Medellin', coordinates: [-75.5812, 6.2442], weight: 4, spread: 0.18 },
-  { id: 'COL-CLO', countryCode: 'COL', regionId: 'COL-P', name: 'Cali', coordinates: [-76.5320, 3.4516], weight: 4, spread: 0.18 },
+  { id: 'COL-BOG', countryCode: 'COL', regionId: 'CO-CUN', name: 'Bogota', coordinates: [-74.0721, 4.7110], weight: 6, spread: 0.20 },
+  { id: 'COL-MDE', countryCode: 'COL', regionId: 'CO-ANT', name: 'Medellin', coordinates: [-75.5812, 6.2442], weight: 4, spread: 0.18 },
+  { id: 'COL-CLO', countryCode: 'COL', regionId: 'CO-VAC', name: 'Cali', coordinates: [-76.5320, 3.4516], weight: 4, spread: 0.18 },
 
   // GBR
-  { id: 'GBR-LON', countryCode: 'GBR', regionId: 'GBR-S', name: 'London', coordinates: [-0.1276, 51.5072], weight: 8, spread: 0.10 },
-  { id: 'GBR-MAN', countryCode: 'GBR', regionId: 'GBR-N', name: 'Manchester', coordinates: [-2.2426, 53.4808], weight: 4, spread: 0.12 },
-  { id: 'GBR-EDI', countryCode: 'GBR', regionId: 'GBR-N', name: 'Edinburgh', coordinates: [-3.1883, 55.9533], weight: 3, spread: 0.12 },
+  { id: 'GBR-LON', countryCode: 'GBR', regionId: 'GB-LND', name: 'London', coordinates: [-0.1276, 51.5072], weight: 8, spread: 0.10 },
+  { id: 'GBR-MAN', countryCode: 'GBR', regionId: 'GB-MAN', name: 'Manchester', coordinates: [-2.2426, 53.4808], weight: 4, spread: 0.12 },
+  { id: 'GBR-EDI', countryCode: 'GBR', regionId: 'GB-EDH', name: 'Edinburgh', coordinates: [-3.1883, 55.9533], weight: 3, spread: 0.12 },
 
   // DEU
-  { id: 'DEU-BER', countryCode: 'DEU', regionId: 'DEU-N', name: 'Berlin', coordinates: [13.4050, 52.5200], weight: 6, spread: 0.12 },
-  { id: 'DEU-HAM', countryCode: 'DEU', regionId: 'DEU-N', name: 'Hamburg', coordinates: [9.9937, 53.5511], weight: 4, spread: 0.12 },
-  { id: 'DEU-MUC', countryCode: 'DEU', regionId: 'DEU-S', name: 'Munich', coordinates: [11.5820, 48.1351], weight: 4, spread: 0.12 },
+  { id: 'DEU-BER', countryCode: 'DEU', regionId: 'DE-BE', name: 'Berlin', coordinates: [13.4050, 52.5200], weight: 6, spread: 0.12 },
+  { id: 'DEU-HAM', countryCode: 'DEU', regionId: 'DE-HH', name: 'Hamburg', coordinates: [9.9937, 53.5511], weight: 4, spread: 0.12 },
+  { id: 'DEU-MUC', countryCode: 'DEU', regionId: 'DE-BY', name: 'Munich', coordinates: [11.5820, 48.1351], weight: 4, spread: 0.12 },
 
   // FRA
-  { id: 'FRA-PAR', countryCode: 'FRA', regionId: 'FRA-N', name: 'Paris', coordinates: [2.3522, 48.8566], weight: 7, spread: 0.10 },
-  { id: 'FRA-LYO', countryCode: 'FRA', regionId: 'FRA-N', name: 'Lyon', coordinates: [4.8357, 45.7640], weight: 4, spread: 0.12 },
-  { id: 'FRA-MRS', countryCode: 'FRA', regionId: 'FRA-S', name: 'Marseille', coordinates: [5.3698, 43.2965], weight: 4, spread: 0.12 },
+  { id: 'FRA-PAR', countryCode: 'FRA', regionId: 'FR-75', name: 'Paris', coordinates: [2.3522, 48.8566], weight: 7, spread: 0.10 },
+  { id: 'FRA-LYO', countryCode: 'FRA', regionId: 'FR-69', name: 'Lyon', coordinates: [4.8357, 45.7640], weight: 4, spread: 0.12 },
+  { id: 'FRA-MRS', countryCode: 'FRA', regionId: 'FR-13', name: 'Marseille', coordinates: [5.3698, 43.2965], weight: 4, spread: 0.12 },
 
   // ESP
-  { id: 'ESP-MAD', countryCode: 'ESP', regionId: 'ESP-C', name: 'Madrid', coordinates: [-3.7038, 40.4168], weight: 6, spread: 0.12 },
-  { id: 'ESP-BCN', countryCode: 'ESP', regionId: 'ESP-E', name: 'Barcelona', coordinates: [2.1734, 41.3851], weight: 6, spread: 0.12 },
-  { id: 'ESP-VLC', countryCode: 'ESP', regionId: 'ESP-E', name: 'Valencia', coordinates: [-0.3763, 39.4699], weight: 4, spread: 0.12 },
+  { id: 'ESP-MAD', countryCode: 'ESP', regionId: 'ES-M', name: 'Madrid', coordinates: [-3.7038, 40.4168], weight: 6, spread: 0.12 },
+  { id: 'ESP-BCN', countryCode: 'ESP', regionId: 'ES-B', name: 'Barcelona', coordinates: [2.1734, 41.3851], weight: 6, spread: 0.12 },
+  { id: 'ESP-VLC', countryCode: 'ESP', regionId: 'ES-SE', name: 'Valencia', coordinates: [-0.3763, 39.4699], weight: 4, spread: 0.12 },
 
   // ITA
-  { id: 'ITA-MIL', countryCode: 'ITA', regionId: 'ITA-N', name: 'Milan', coordinates: [9.1900, 45.4642], weight: 6, spread: 0.12 },
-  { id: 'ITA-ROM', countryCode: 'ITA', regionId: 'ITA-C', name: 'Rome', coordinates: [12.4964, 41.9028], weight: 6, spread: 0.12 },
-  { id: 'ITA-NAP', countryCode: 'ITA', regionId: 'ITA-S', name: 'Naples', coordinates: [14.2681, 40.8518], weight: 4, spread: 0.12 },
+  { id: 'ITA-MIL', countryCode: 'ITA', regionId: 'IT-MI', name: 'Milan', coordinates: [9.1900, 45.4642], weight: 6, spread: 0.12 },
+  { id: 'ITA-ROM', countryCode: 'ITA', regionId: 'IT-RM', name: 'Rome', coordinates: [12.4964, 41.9028], weight: 6, spread: 0.12 },
+  { id: 'ITA-NAP', countryCode: 'ITA', regionId: 'IT-NA', name: 'Naples', coordinates: [14.2681, 40.8518], weight: 4, spread: 0.12 },
 
   // RUS
-  { id: 'RUS-MOW', countryCode: 'RUS', regionId: 'RUS-W', name: 'Moscow', coordinates: [37.6173, 55.7558], weight: 8, spread: 0.14 },
-  { id: 'RUS-LED', countryCode: 'RUS', regionId: 'RUS-W', name: 'Saint Petersburg', coordinates: [30.3351, 59.9343], weight: 6, spread: 0.14 },
-  { id: 'RUS-NVS', countryCode: 'RUS', regionId: 'RUS-S', name: 'Novosibirsk', coordinates: [82.9204, 55.0302], weight: 4, spread: 0.18 },
+  { id: 'RUS-MOW', countryCode: 'RUS', regionId: 'RU-MOW', name: 'Moscow', coordinates: [37.6173, 55.7558], weight: 8, spread: 0.14 },
+  { id: 'RUS-LED', countryCode: 'RUS', regionId: 'RU-SPE', name: 'Saint Petersburg', coordinates: [30.3351, 59.9343], weight: 6, spread: 0.14 },
+  { id: 'RUS-NVS', countryCode: 'RUS', regionId: 'RU-NVS', name: 'Novosibirsk', coordinates: [82.9204, 55.0302], weight: 4, spread: 0.18 },
+  { id: 'RUS-SIM', countryCode: 'RUS', regionId: 'RU-CR', name: 'Simferopol', coordinates: [34.1, 44.95], weight: 3, spread: 0.14 },
+  { id: 'RUS-SEV', countryCode: 'RUS', regionId: 'RU-SEV', name: 'Sevastopol', coordinates: [33.52, 44.62], weight: 2, spread: 0.10 },
 
   // TUR
-  { id: 'TUR-IST', countryCode: 'TUR', regionId: 'TUR-M', name: 'Istanbul', coordinates: [28.9784, 41.0082], weight: 7, spread: 0.14 },
-  { id: 'TUR-ANK', countryCode: 'TUR', regionId: 'TUR-A', name: 'Ankara', coordinates: [32.8597, 39.9334], weight: 4, spread: 0.14 },
-  { id: 'TUR-IZM', countryCode: 'TUR', regionId: 'TUR-A', name: 'Izmir', coordinates: [27.1428, 38.4237], weight: 4, spread: 0.14 },
+  { id: 'TUR-IST', countryCode: 'TUR', regionId: 'TR-34', name: 'Istanbul', coordinates: [28.9784, 41.0082], weight: 7, spread: 0.14 },
+  { id: 'TUR-ANK', countryCode: 'TUR', regionId: 'TR-06', name: 'Ankara', coordinates: [32.8597, 39.9334], weight: 4, spread: 0.14 },
+  { id: 'TUR-IZM', countryCode: 'TUR', regionId: 'TR-35', name: 'Izmir', coordinates: [27.1428, 38.4237], weight: 4, spread: 0.14 },
 
   // IND
-  { id: 'IND-DEL', countryCode: 'IND', regionId: 'IND-N', name: 'Delhi', coordinates: [77.2090, 28.6139], weight: 8, spread: 0.18 },
-  { id: 'IND-BOM', countryCode: 'IND', regionId: 'IND-W', name: 'Mumbai', coordinates: [72.8777, 19.0760], weight: 7, spread: 0.20 },
-  { id: 'IND-BLR', countryCode: 'IND', regionId: 'IND-S', name: 'Bengaluru', coordinates: [77.5946, 12.9716], weight: 6, spread: 0.20 },
+  { id: 'IND-DEL', countryCode: 'IND', regionId: 'IN-DL', name: 'Delhi', coordinates: [77.2090, 28.6139], weight: 8, spread: 0.18 },
+  { id: 'IND-BOM', countryCode: 'IND', regionId: 'IN-MH', name: 'Mumbai', coordinates: [72.8777, 19.0760], weight: 7, spread: 0.20 },
+  { id: 'IND-BLR', countryCode: 'IND', regionId: 'IN-KA', name: 'Bengaluru', coordinates: [77.5946, 12.9716], weight: 6, spread: 0.20 },
 
   // CHN
-  { id: 'CHN-BJS', countryCode: 'CHN', regionId: 'CHN-N', name: 'Beijing', coordinates: [116.4074, 39.9042], weight: 8, spread: 0.18 },
-  { id: 'CHN-SHA', countryCode: 'CHN', regionId: 'CHN-E', name: 'Shanghai', coordinates: [121.4737, 31.2304], weight: 8, spread: 0.18 },
-  { id: 'CHN-CAN', countryCode: 'CHN', regionId: 'CHN-S', name: 'Guangzhou', coordinates: [113.2644, 23.1291], weight: 6, spread: 0.18 },
+  { id: 'CHN-BJS', countryCode: 'CHN', regionId: 'CN-BJ', name: 'Beijing', coordinates: [116.4074, 39.9042], weight: 8, spread: 0.18 },
+  { id: 'CHN-SHA', countryCode: 'CHN', regionId: 'CN-SH', name: 'Shanghai', coordinates: [121.4737, 31.2304], weight: 8, spread: 0.18 },
+  { id: 'CHN-CAN', countryCode: 'CHN', regionId: 'CN-GD', name: 'Guangzhou', coordinates: [113.2644, 23.1291], weight: 6, spread: 0.18 },
 
   // JPN
-  { id: 'JPN-TYO', countryCode: 'JPN', regionId: 'JPN-K', name: 'Tokyo', coordinates: [139.6917, 35.6895], weight: 9, spread: 0.14 },
-  { id: 'JPN-OSA', countryCode: 'JPN', regionId: 'JPN-KS', name: 'Osaka', coordinates: [135.5022, 34.6937], weight: 6, spread: 0.14 },
-  { id: 'JPN-SPK', countryCode: 'JPN', regionId: 'JPN-H', name: 'Sapporo', coordinates: [141.3545, 43.0621], weight: 4, spread: 0.16 },
+  { id: 'JPN-TYO', countryCode: 'JPN', regionId: 'JP-13', name: 'Tokyo', coordinates: [139.6917, 35.6895], weight: 9, spread: 0.14 },
+  { id: 'JPN-OSA', countryCode: 'JPN', regionId: 'JP-27', name: 'Osaka', coordinates: [135.5022, 34.6937], weight: 6, spread: 0.14 },
+  { id: 'JPN-SPK', countryCode: 'JPN', regionId: 'JP-01', name: 'Sapporo', coordinates: [141.3545, 43.0621], weight: 4, spread: 0.16 },
 
   // KOR
-  { id: 'KOR-SEL', countryCode: 'KOR', regionId: 'KOR-S', name: 'Seoul', coordinates: [126.9780, 37.5665], weight: 8, spread: 0.14 },
-  { id: 'KOR-INC', countryCode: 'KOR', regionId: 'KOR-S', name: 'Incheon', coordinates: [126.7052, 37.4563], weight: 4, spread: 0.14 },
-  { id: 'KOR-PUS', countryCode: 'KOR', regionId: 'KOR-C', name: 'Busan', coordinates: [129.0756, 35.1796], weight: 5, spread: 0.14 },
+  { id: 'KOR-SEL', countryCode: 'KOR', regionId: 'KR-11', name: 'Seoul', coordinates: [126.9780, 37.5665], weight: 8, spread: 0.14 },
+  { id: 'KOR-INC', countryCode: 'KOR', regionId: 'KR-41', name: 'Incheon', coordinates: [126.7052, 37.4563], weight: 4, spread: 0.14 },
+  { id: 'KOR-PUS', countryCode: 'KOR', regionId: 'KR-26', name: 'Busan', coordinates: [129.0756, 35.1796], weight: 5, spread: 0.14 },
 
   // IDN
-  { id: 'IDN-JKT', countryCode: 'IDN', regionId: 'IDN-J', name: 'Jakarta', coordinates: [106.8456, -6.2088], weight: 8, spread: 0.22 },
-  { id: 'IDN-BDG', countryCode: 'IDN', regionId: 'IDN-J', name: 'Bandung', coordinates: [107.6191, -6.9175], weight: 4, spread: 0.22 },
-  { id: 'IDN-SBY', countryCode: 'IDN', regionId: 'IDN-E', name: 'Surabaya', coordinates: [112.7521, -7.2575], weight: 5, spread: 0.22 },
+  { id: 'IDN-JKT', countryCode: 'IDN', regionId: 'ID-JK', name: 'Jakarta', coordinates: [106.8456, -6.2088], weight: 8, spread: 0.22 },
+  { id: 'IDN-BDG', countryCode: 'IDN', regionId: 'ID-JB', name: 'Bandung', coordinates: [107.6191, -6.9175], weight: 4, spread: 0.22 },
+  { id: 'IDN-SBY', countryCode: 'IDN', regionId: 'ID-JI', name: 'Surabaya', coordinates: [112.7521, -7.2575], weight: 5, spread: 0.22 },
 
   // THA
-  { id: 'THA-BKK', countryCode: 'THA', regionId: 'THA-C', name: 'Bangkok', coordinates: [100.5018, 13.7563], weight: 7, spread: 0.20 },
-  { id: 'THA-CNX', countryCode: 'THA', regionId: 'THA-N', name: 'Chiang Mai', coordinates: [98.9817, 18.7061], weight: 3, spread: 0.22 },
-  { id: 'THA-HKT', countryCode: 'THA', regionId: 'THA-S', name: 'Phuket', coordinates: [98.3381, 7.8804], weight: 3, spread: 0.22 },
+  { id: 'THA-BKK', countryCode: 'THA', regionId: 'TH-10', name: 'Bangkok', coordinates: [100.5018, 13.7563], weight: 7, spread: 0.20 },
+  { id: 'THA-CNX', countryCode: 'THA', regionId: 'TH-50', name: 'Chiang Mai', coordinates: [98.9817, 18.7061], weight: 3, spread: 0.22 },
+  { id: 'THA-HKT', countryCode: 'THA', regionId: 'TH-83', name: 'Phuket', coordinates: [98.3381, 7.8804], weight: 3, spread: 0.22 },
 
   // PHL
-  { id: 'PHL-MNL', countryCode: 'PHL', regionId: 'PHL-N', name: 'Manila', coordinates: [120.9842, 14.5995], weight: 7, spread: 0.22 },
-  { id: 'PHL-CEB', countryCode: 'PHL', regionId: 'PHL-N', name: 'Cebu', coordinates: [123.8854, 10.3157], weight: 4, spread: 0.22 },
-  { id: 'PHL-DVO', countryCode: 'PHL', regionId: 'PHL-S', name: 'Davao', coordinates: [125.6128, 7.1907], weight: 3, spread: 0.22 },
+  { id: 'PHL-MNL', countryCode: 'PHL', regionId: 'PH-MNL', name: 'Manila', coordinates: [120.9842, 14.5995], weight: 7, spread: 0.22 },
+  { id: 'PHL-CEB', countryCode: 'PHL', regionId: 'PH-CEB', name: 'Cebu', coordinates: [123.8854, 10.3157], weight: 4, spread: 0.22 },
+  { id: 'PHL-DVO', countryCode: 'PHL', regionId: 'PH-DAV', name: 'Davao', coordinates: [125.6128, 7.1907], weight: 3, spread: 0.22 },
 
   // NGA
-  { id: 'NGA-LOS', countryCode: 'NGA', regionId: 'NGA-SW', name: 'Lagos', coordinates: [3.3792, 6.5244], weight: 7, spread: 0.24 },
-  { id: 'NGA-ABV', countryCode: 'NGA', regionId: 'NGA-C', name: 'Abuja', coordinates: [7.3986, 9.0765], weight: 4, spread: 0.24 },
-  { id: 'NGA-KAN', countryCode: 'NGA', regionId: 'NGA-N', name: 'Kano', coordinates: [8.5167, 12.0000], weight: 4, spread: 0.24 },
+  { id: 'NGA-LOS', countryCode: 'NGA', regionId: 'NG-LA', name: 'Lagos', coordinates: [3.3792, 6.5244], weight: 7, spread: 0.24 },
+  { id: 'NGA-ABV', countryCode: 'NGA', regionId: 'NG-FC', name: 'Abuja', coordinates: [7.3986, 9.0765], weight: 4, spread: 0.24 },
+  { id: 'NGA-KAN', countryCode: 'NGA', regionId: 'NG-KN', name: 'Kano', coordinates: [8.5167, 12.0000], weight: 4, spread: 0.24 },
 
   // ZAF
-  { id: 'ZAF-JNB', countryCode: 'ZAF', regionId: 'ZAF-G', name: 'Johannesburg', coordinates: [28.0473, -26.2041], weight: 6, spread: 0.20 },
-  { id: 'ZAF-CPT', countryCode: 'ZAF', regionId: 'ZAF-WC', name: 'Cape Town', coordinates: [18.4241, -33.9249], weight: 5, spread: 0.20 },
-  { id: 'ZAF-DUR', countryCode: 'ZAF', regionId: 'ZAF-KZN', name: 'Durban', coordinates: [31.0218, -29.8587], weight: 4, spread: 0.20 },
+  { id: 'ZAF-JNB', countryCode: 'ZAF', regionId: 'ZA-GT', name: 'Johannesburg', coordinates: [28.0473, -26.2041], weight: 6, spread: 0.20 },
+  { id: 'ZAF-CPT', countryCode: 'ZAF', regionId: 'ZA-WC', name: 'Cape Town', coordinates: [18.4241, -33.9249], weight: 5, spread: 0.20 },
+  { id: 'ZAF-DUR', countryCode: 'ZAF', regionId: 'ZA-NL', name: 'Durban', coordinates: [31.0218, -29.8587], weight: 4, spread: 0.20 },
 
   // EGY
-  { id: 'EGY-CAI', countryCode: 'EGY', regionId: 'EGY-N', name: 'Cairo', coordinates: [31.2357, 30.0444], weight: 7, spread: 0.18 },
-  { id: 'EGY-ALE', countryCode: 'EGY', regionId: 'EGY-C', name: 'Alexandria', coordinates: [29.9187, 31.2001], weight: 4, spread: 0.18 },
-  { id: 'EGY-GIZ', countryCode: 'EGY', regionId: 'EGY-N', name: 'Giza', coordinates: [31.2109, 30.0131], weight: 4, spread: 0.18 },
+  { id: 'EGY-CAI', countryCode: 'EGY', regionId: 'EG-C', name: 'Cairo', coordinates: [31.2357, 30.0444], weight: 7, spread: 0.18 },
+  { id: 'EGY-ALE', countryCode: 'EGY', regionId: 'EG-ALX', name: 'Alexandria', coordinates: [29.9187, 31.2001], weight: 4, spread: 0.18 },
+  { id: 'EGY-GIZ', countryCode: 'EGY', regionId: 'EG-GZ', name: 'Giza', coordinates: [31.2109, 30.0131], weight: 4, spread: 0.18 },
 
   // AUS
-  { id: 'AUS-SYD', countryCode: 'AUS', regionId: 'AUS-NSW', name: 'Sydney', coordinates: [151.2093, -33.8688], weight: 6, spread: 0.18 },
-  { id: 'AUS-MEL', countryCode: 'AUS', regionId: 'AUS-VIC', name: 'Melbourne', coordinates: [144.9631, -37.8136], weight: 6, spread: 0.18 },
-  { id: 'AUS-BNE', countryCode: 'AUS', regionId: 'AUS-QLD', name: 'Brisbane', coordinates: [153.0251, -27.4698], weight: 4, spread: 0.20 },
+  { id: 'AUS-SYD', countryCode: 'AUS', regionId: 'AU-NSW', name: 'Sydney', coordinates: [151.2093, -33.8688], weight: 6, spread: 0.18 },
+  { id: 'AUS-MEL', countryCode: 'AUS', regionId: 'AU-VIC', name: 'Melbourne', coordinates: [144.9631, -37.8136], weight: 6, spread: 0.18 },
+  { id: 'AUS-BNE', countryCode: 'AUS', regionId: 'AU-QLD', name: 'Brisbane', coordinates: [153.0251, -27.4698], weight: 4, spread: 0.20 },
 ];
 
-const CAT_CITY_BY_ID = Object.fromEntries(CAT_CITIES.map((c) => [c.id, c]));
-const CAT_CITIES_BY_COUNTRY = COUNTRIES.reduce((acc, c) => {
-  acc[c.code] = CAT_CITIES.filter((x) => x.countryCode === c.code);
-  return acc;
-}, {});
 
 // --- Generate daily data (365 days, ending on Feb 10, 2026) ---
 const TOTAL_DAYS = 365;
@@ -516,17 +570,19 @@ function generateCountryDailyData() {
     COUNTRIES.forEach((c, idx) => {
       const users = Math.max(0, usersByCountry[idx]);
 
-      const catsPerU = clamp(randNormal(c.catsPerUser, 0.45), 1.05, 6.0);
-      const cats = Math.max(users, Math.round(users * catsPerU));
+      const catsPerU = clamp(randNormal(c.catsPerUser, 0.35), 0.3, 4.0);
+      const cats = Math.max(0, Math.round(users * catsPerU));
 
-      const shotsPerC = clamp(randNormal(c.shotsPerCat, 1.25), 1.0, 12.0);
-      const shots = Math.max(0, Math.round(cats * shotsPerC));
+      const shotsPerC = clamp(randNormal(c.shotsPerCat, 0.8), 1.0, 8.0);
+      const progress = dayIndex / TOTAL_DAYS;
+      const existingUserBoost = 1 + progress * 1.5;
+      const shots = Math.max(0, Math.round(cats * shotsPerC * existingUserBoost));
 
       const iosR = clamp(randNormal(c.iosShare, 0.08), 0.02, 0.95);
       const usersIos = Math.round(users * iosR);
       const usersAndroid = Math.max(0, users - usersIos);
 
-      const strayR = clamp(randNormal(c.strayShare ?? 0.62, 0.10), 0.20, 0.92);
+      const strayR = clamp(randNormal(c.strayShare ?? 0.62, 0.06), 0.05, 0.95);
       const catsStray = Math.round(cats * strayR);
       const catsHome = Math.max(0, cats - catsStray);
 
@@ -595,104 +651,57 @@ function generateCountryData() {
 
 export const countryData = generateCountryData();
 
-// --- Generate per-cat events for the map (used only for map drill-down) ---
-function makeWeightedPicker(items) {
-  const weights = items.map((x) => Math.max(0, x.weight ?? 1));
-  const cum = [];
-  let total = 0;
-  for (let i = 0; i < items.length; i++) {
-    total += weights[i];
-    cum.push(total);
+// --- Generate cat dots on-the-fly for country drill-down ---
+function hashCode(str) {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) + hash + str.charCodeAt(i)) | 0;
   }
+  return Math.abs(hash);
+}
 
-  return () => {
-    if (items.length === 0 || total <= 0) return null;
-    const r = rand() * total;
-    let lo = 0;
-    let hi = cum.length - 1;
-    while (lo < hi) {
-      const mid = Math.floor((lo + hi) / 2);
-      if (r <= cum[mid]) hi = mid;
-      else lo = mid + 1;
+export function generateCountryCatDots(countryCode, catType = 'ALL', maxDots = 500) {
+  const cities = CAT_CITIES.filter((c) => c.countryCode === countryCode);
+  if (cities.length === 0) return [];
+
+  const country = COUNTRIES.find((c) => c.code === countryCode);
+  const strayShare = country?.strayShare ?? 0.62;
+
+  const rng = seededRandom(hashCode(countryCode) + 7777);
+
+  const totalWeight = cities.reduce((s, c) => s + c.weight, 0);
+  const dots = [];
+
+  cities.forEach((city) => {
+    const share = city.weight / totalWeight;
+    const cityDotCount = Math.max(1, Math.round(maxDots * share));
+    const spread = city.spread ?? 0.2;
+
+    for (let i = 0; i < cityDotCount; i++) {
+      const u1 = rng() + 0.0001;
+      const u2 = rng();
+      const z1 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+      const z2 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
+
+      const lng = city.coordinates[0] + z1 * spread;
+      const lat = clamp(city.coordinates[1] + z2 * spread * 0.7, -85, 85);
+
+      const isStray = rng() < strayShare;
+
+      if (catType === 'Stray' && !isStray) continue;
+      if (catType === 'Home' && isStray) continue;
+
+      dots.push({
+        id: `${city.id}-${i}`,
+        coordinates: [lng, lat],
+        isStray,
+        cityName: city.name,
+      });
     }
-    return items[lo];
-  };
-}
-
-function jitterCoord([lng, lat], spread) {
-  const dx = randNormal(0, spread);
-  const dy = randNormal(0, spread * 0.7);
-  const outLng = lng + dx;
-  const outLat = clamp(lat + dy, -85, 85);
-  return [outLng, outLat];
-}
-
-function splitPlatformCount(totalCats, iosRatio) {
-  return distributeInt(totalCats, [iosRatio, 1 - iosRatio]);
-}
-
-function generateCatEvents() {
-  const cityPickerByCountry = {};
-  COUNTRIES.forEach((c) => {
-    const cities = CAT_CITIES_BY_COUNTRY[c.code] || [];
-    cityPickerByCountry[c.code] = makeWeightedPicker(cities);
   });
 
-  let idCounter = 1;
-  const catsByDate = {};
-  const allCats = [];
-
-  for (let dayIndex = 0; dayIndex < TOTAL_DAYS; dayIndex++) {
-    const date = DATES[dayIndex];
-    const list = [];
-
-    COUNTRIES.forEach((country) => {
-      const d = countryDailyData[country.code]?.[dayIndex];
-      if (!d) return;
-
-      const iosRatio = d.newUsers > 0 ? d.newUsersIos / d.newUsers : country.iosShare;
-      const [strayIos, strayAndroid] = splitPlatformCount(d.newCatsStray, iosRatio);
-      const [homeIos, homeAndroid] = splitPlatformCount(d.newCatsHome, iosRatio);
-
-      const picker = cityPickerByCountry[country.code];
-
-      function pushCats(count, catType, platform) {
-        for (let i = 0; i < count; i++) {
-          const city = picker?.();
-          if (!city) return;
-          const coord = jitterCoord(city.coordinates, city.spread ?? 0.2);
-          const cat = {
-            id: `CAT-${String(idCounter).padStart(7, '0')}`,
-            date,
-            countryCode: country.code,
-            continent: country.continent,
-            regionId: city.regionId,
-            cityId: city.id,
-            catType,
-            platform,
-            coordinates: coord,
-          };
-          idCounter += 1;
-          list.push(cat);
-          allCats.push(cat);
-        }
-      }
-
-      pushCats(strayIos, 'Stray', 'iOS');
-      pushCats(strayAndroid, 'Stray', 'Android');
-      pushCats(homeIos, 'Home', 'iOS');
-      pushCats(homeAndroid, 'Home', 'Android');
-    });
-
-    catsByDate[date] = list;
-  }
-
-  return { catsByDate, allCats };
+  return dots;
 }
-
-const CAT_EVENTS = generateCatEvents();
-export const catEventsByDate = CAT_EVENTS.catsByDate;
-export const catEvents = CAT_EVENTS.allCats;
 
 // --- Age/Sex distribution ---
 export const AGE_GROUPS = [
@@ -769,18 +778,19 @@ COUNTRIES.forEach((c) => {
 
 // --- Aggregate KPIs ---
 export function computeKpis(data, prevData) {
-  const totalUsers = data.reduce((s, d) => s + d.newUsers, 0);
-  const totalCats = data.reduce((s, d) => s + d.newCats, 0);
-  const totalShots = data.reduce((s, d) => s + d.shots, 0);
+  const safe = (v) => (Number.isFinite(v) ? v : 0);
+  const totalUsers = data.reduce((s, d) => s + safe(d.newUsers), 0);
+  const totalCats = data.reduce((s, d) => s + safe(d.newCats), 0);
+  const totalShots = data.reduce((s, d) => s + safe(d.shots), 0);
   const avgDauMau = data.length > 0
-    ? data.reduce((s, d) => s + d.dauMau, 0) / data.length
+    ? data.reduce((s, d) => s + safe(d.dauMau), 0) / data.length
     : 0;
 
-  const prevUsers = prevData ? prevData.reduce((s, d) => s + d.newUsers, 0) : null;
-  const prevCats = prevData ? prevData.reduce((s, d) => s + d.newCats, 0) : null;
-  const prevShots = prevData ? prevData.reduce((s, d) => s + d.shots, 0) : null;
+  const prevUsers = prevData ? prevData.reduce((s, d) => s + safe(d.newUsers), 0) : null;
+  const prevCats = prevData ? prevData.reduce((s, d) => s + safe(d.newCats), 0) : null;
+  const prevShots = prevData ? prevData.reduce((s, d) => s + safe(d.shots), 0) : null;
   const prevDauMau = prevData && prevData.length > 0
-    ? prevData.reduce((s, d) => s + d.dauMau, 0) / prevData.length
+    ? prevData.reduce((s, d) => s + safe(d.dauMau), 0) / prevData.length
     : null;
 
   const pctChange = (curr, prev) =>
@@ -883,15 +893,6 @@ function applyPlatform(d, platform) {
     else newCatsHome += drift;
   }
 
-  // Enforce invariants (cats should never be < users).
-  if (newCats < platformUsers) {
-    const bump = platformUsers - newCats;
-    newCats += bump;
-    // Add bump into the dominant type bucket.
-    if (newCatsStray >= newCatsHome) newCatsStray += bump;
-    else newCatsHome += bump;
-  }
-
   const out = {
     ...d,
     newUsers: platformUsers,
@@ -930,7 +931,12 @@ function applyCatType(d, catType) {
   let newUsersIos = Math.round(d.newUsersIos * ratio);
   let newUsersAndroid = Math.round(d.newUsersAndroid * ratio);
 
-  // Enforce cats >= users after rounding.
+  // Enforce cats >= users after rounding; also ensure users >= 1 when cats > 0.
+  if (selectedCats > 0 && newUsers <= 0) {
+    newUsers = 1;
+    newUsersIos = d.newUsersIos >= d.newUsersAndroid ? 1 : 0;
+    newUsersAndroid = 1 - newUsersIos;
+  }
   if (newUsers > selectedCats) {
     newUsers = selectedCats;
     const totalUsersSplit = d.newUsersIos + d.newUsersAndroid;
@@ -1037,7 +1043,7 @@ export function aggregateForChart(data, period) {
   }
   if (period === 'M') {
     return data.slice(-30).map((d) => ({
-      label: d.date.slice(8),
+      label: d.date.slice(5),
       ...d,
     }));
   }

@@ -1,8 +1,7 @@
 import { useState, useMemo } from 'react';
 import KpiCards from './components/KpiCards';
 import Filters from './components/Filters';
-import NewUsersChart from './components/NewUsersChart';
-import NewCatsChart from './components/NewCatsChart';
+import UsersAndCatsChart from './components/UsersAndCatsChart';
 import AgeSexChart from './components/AgeSexChart';
 import DauMauChart from './components/DauMauChart';
 import WorldHeatmap from './components/WorldHeatmap';
@@ -118,22 +117,14 @@ function App() {
 
         {/* Charts 2x2 Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-          <NewUsersChart data={chartData} />
-          <NewCatsChart data={chartData} />
+          <UsersAndCatsChart data={chartData} />
+          <DauMauChart data={dailyData} />
           <AgeSexChart data={ageData} />
           <EngagementChart data={chartData} />
         </div>
 
-        {/* DAU/MAU Line Chart */}
-        <div className="grid grid-cols-1 mb-4">
-          <DauMauChart data={dailyData} />
-        </div>
-
         {/* World Heatmap */}
-        <WorldHeatmap
-          key={`${filters.continent}:${filters.country}`}
-          filters={filters}
-        />
+        <WorldHeatmap filters={filters} onChange={setFilters} />
       </div>
     </div>
   );
