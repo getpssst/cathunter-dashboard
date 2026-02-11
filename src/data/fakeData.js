@@ -2952,7 +2952,7 @@ export const CAT_CITIES = [
 
 
 // --- Generate daily data (365 days, ending on Feb 10, 2026) ---
-const TOTAL_DAYS = 365;
+const TOTAL_DAYS = 548; // ~1.5 years so ALL > YEAR
 const today = new Date(2026, 1, 10); // Feb 10, 2026
 
 function buildDates() {
