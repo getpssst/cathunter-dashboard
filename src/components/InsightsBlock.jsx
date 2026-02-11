@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { formatNumber } from '../utils/formatNumber';
+import { COUNTRIES } from '../data/fakeData';
 
 function safe(v) {
   return Number.isFinite(v) ? v : 0;
@@ -10,166 +11,198 @@ function avg(arr) {
   return arr.reduce((s, v) => s + v, 0) / arr.length;
 }
 
-function pct(a, b) {
-  return b > 0 ? ((a - b) / b) * 100 : 0;
+function sum(arr) {
+  return arr.reduce((s, v) => s + v, 0);
 }
 
 function fmtDate(d) {
   if (!d) return '';
-  // "Aug 12" style
   const dt = new Date(d + 'T00:00:00Z');
   return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 }
 
-function detectInsights(data) {
-  if (!data || data.length < 3) return [];
+function fmtDateRange(from, to) {
+  if (!from || !to) return '';
+  return `${fmtDate(from)} – ${fmtDate(to)}`;
+}
 
-  const insights = [];
+const PERIOD_LABELS = { D: 'today', W: 'this week', M: 'this month', Y: 'this year', ALL: 'all time' };
+const PLATFORM_LABELS = { ALL: '', iOS: 'iOS ', Android: 'Android ' };
+const CAT_LABELS = { ALL: '', Stray: 'stray ', Home: 'home ' };
+
+function contextLabel(filters) {
+  const parts = [];
+  if (filters.country !== 'ALL') {
+    const c = COUNTRIES.find((x) => x.code === filters.country);
+    parts.push(c?.name || filters.country);
+  } else if (filters.continent !== 'ALL') {
+    parts.push(filters.continent);
+  }
+  const plat = PLATFORM_LABELS[filters.platform] || '';
+  const cat = CAT_LABELS[filters.catType] || '';
+  if (plat || cat) parts.push(`${plat}${cat}`.trim());
+  return parts.length > 0 ? parts.join(', ') : 'globally';
+}
+
+function detectInsights(data, filters) {
+  if (!data || data.length < 2) return [];
+
+  const candidates = [];
   const n = data.length;
+  const ctx = contextLabel(filters);
+  const period = PERIOD_LABELS[filters.period] || '';
 
   const users = data.map((d) => safe(d.newUsers));
   const cats = data.map((d) => safe(d.newCats));
   const shots = data.map((d) => safe(d.shots));
   const dauMau = data.map((d) => safe(d.dauMau));
+  const firstDate = data[0]?.date;
+  const lastDate = data[n - 1]?.date;
 
-  // --- 1. Overall trend (first quarter vs last quarter) ---
-  const q = Math.max(1, Math.floor(n / 4));
-  const firstUsers = avg(users.slice(0, q));
-  const lastUsers = avg(users.slice(-q));
-  const usersTrend = pct(lastUsers, firstUsers);
+  const totalUsers = sum(users);
+  const totalCats = sum(cats);
+  const totalShots = sum(shots);
 
-  if (Math.abs(usersTrend) > 15) {
-    const dir = usersTrend > 0 ? 'up' : 'down';
-    const icon = usersTrend > 0 ? 'trending_up' : 'trending_down';
-    insights.push({
-      type: dir === 'up' ? 'positive' : 'negative',
-      text: `New users trending ${dir} ${Math.abs(usersTrend).toFixed(0)}% — from ~${formatNumber(Math.round(firstUsers))}/day to ~${formatNumber(Math.round(lastUsers))}/day`,
-    });
-  }
+  // --- 1. Biggest growth spike (rolling window) ---
+  if (n >= 10) {
+    const w = Math.min(7, Math.floor(n / 3));
+    let best = { score: 0 };
 
-  // --- 2. Biggest spike (7-day rolling window) ---
-  if (n >= 14) {
-    let bestSpike = { pct: 0, from: 0, to: 0 };
-    const windowSize = Math.min(7, Math.floor(n / 3));
-
-    for (let i = windowSize; i <= n - windowSize; i++) {
-      const before = avg(users.slice(i - windowSize, i));
-      const after = avg(users.slice(i, i + windowSize));
-      const change = pct(after, before);
-      if (change > bestSpike.pct) {
-        bestSpike = { pct: change, from: i - windowSize, to: i + windowSize - 1 };
+    for (let i = w; i <= n - w; i++) {
+      const before = avg(users.slice(i - w, i));
+      const after = avg(users.slice(i, i + w));
+      if (before > 0) {
+        const change = ((after - before) / before) * 100;
+        if (change > best.score) {
+          best = {
+            score: change,
+            beforeAvg: Math.round(before),
+            afterAvg: Math.round(after),
+            fromDate: data[i - w]?.date,
+            toDate: data[i + w - 1]?.date,
+          };
+        }
       }
     }
 
-    if (bestSpike.pct > 25) {
-      const fromDate = fmtDate(data[bestSpike.from]?.date);
-      const toDate = fmtDate(data[bestSpike.to]?.date);
-      insights.push({
+    if (best.score > 15) {
+      candidates.push({
         type: 'positive',
-        text: `Explosive growth ${fromDate} — ${toDate}: users surged +${bestSpike.pct.toFixed(0)}%`,
+        priority: best.score,
+        text: `Growth spike ${fmtDateRange(best.fromDate, best.toDate)} ${ctx}: ${formatNumber(best.beforeAvg)} → ${formatNumber(best.afterAvg)} users/day (+${best.score.toFixed(0)}%)`,
       });
     }
   }
 
-  // --- 3. Biggest dip ---
-  if (n >= 14) {
-    let worstDip = { pct: 0, from: 0, to: 0 };
-    const windowSize = Math.min(7, Math.floor(n / 3));
+  // --- 2. Worst dip ---
+  if (n >= 10) {
+    const w = Math.min(7, Math.floor(n / 3));
+    let worst = { score: 0 };
 
-    for (let i = windowSize; i <= n - windowSize; i++) {
-      const before = avg(users.slice(i - windowSize, i));
-      const after = avg(users.slice(i, i + windowSize));
-      const change = pct(after, before);
-      if (change < worstDip.pct) {
-        worstDip = { pct: change, from: i - windowSize, to: i + windowSize - 1 };
+    for (let i = w; i <= n - w; i++) {
+      const before = avg(users.slice(i - w, i));
+      const after = avg(users.slice(i, i + w));
+      if (before > 0) {
+        const change = ((after - before) / before) * 100;
+        if (change < worst.score) {
+          worst = {
+            score: change,
+            beforeAvg: Math.round(before),
+            afterAvg: Math.round(after),
+            fromDate: data[i - w]?.date,
+            toDate: data[i + w - 1]?.date,
+          };
+        }
       }
     }
 
-    if (worstDip.pct < -20) {
-      const fromDate = fmtDate(data[worstDip.from]?.date);
-      const toDate = fmtDate(data[worstDip.to]?.date);
-      insights.push({
+    if (worst.score < -15) {
+      candidates.push({
         type: 'negative',
-        text: `Notable dip ${fromDate} — ${toDate}: users dropped ${worstDip.pct.toFixed(0)}%`,
+        priority: Math.abs(worst.score),
+        text: `Dip ${fmtDateRange(worst.fromDate, worst.toDate)} ${ctx}: ${formatNumber(worst.beforeAvg)} → ${formatNumber(worst.afterAvg)} users/day (${worst.score.toFixed(0)}%)`,
       });
+    }
+  }
+
+  // --- 3. DAU/MAU movement ---
+  if (n >= 7) {
+    const q = Math.max(1, Math.floor(n / 4));
+    const early = avg(dauMau.slice(0, q));
+    const late = avg(dauMau.slice(-q));
+
+    if (early > 0.01) {
+      const change = ((late - early) / early) * 100;
+      if (Math.abs(change) > 8) {
+        const dir = change > 0 ? 'up' : 'down';
+        candidates.push({
+          type: change > 0 ? 'positive' : 'warning',
+          priority: Math.abs(change) * 0.8,
+          text: `DAU/MAU ${dir} ${ctx} (${period}): ${early.toFixed(2)} → ${late.toFixed(2)} (${change > 0 ? '+' : ''}${change.toFixed(0)}%)`,
+        });
+      }
     }
   }
 
   // --- 4. Record day ---
-  const maxUsersIdx = users.indexOf(Math.max(...users));
-  const maxCatsIdx = cats.indexOf(Math.max(...cats));
-  const maxShotsIdx = shots.indexOf(Math.max(...shots));
-
-  if (users[maxUsersIdx] > 0) {
-    insights.push({
-      type: 'info',
-      text: `Peak day: ${fmtDate(data[maxUsersIdx]?.date)} with ${formatNumber(users[maxUsersIdx])} users, ${formatNumber(cats[maxCatsIdx])} cats, ${formatNumber(shots[maxShotsIdx])} shots`,
-    });
-  }
-
-  // --- 5. DAU/MAU trend ---
-  if (n >= 7) {
-    const firstDau = avg(dauMau.slice(0, q));
-    const lastDau = avg(dauMau.slice(-q));
-    const dauChange = pct(lastDau, firstDau);
-
-    if (Math.abs(dauChange) > 10 && firstDau > 0.01) {
-      const dir = dauChange > 0 ? 'improved' : 'declined';
-      insights.push({
-        type: dauChange > 0 ? 'positive' : 'warning',
-        text: `Engagement ${dir}: DAU/MAU moved from ${firstDau.toFixed(2)} to ${lastDau.toFixed(2)} (${dauChange > 0 ? '+' : ''}${dauChange.toFixed(0)}%)`,
+  if (n >= 3) {
+    const maxIdx = users.indexOf(Math.max(...users));
+    if (users[maxIdx] > 0) {
+      candidates.push({
+        type: 'info',
+        priority: 30,
+        text: `Peak ${fmtDate(data[maxIdx]?.date)} ${ctx}: ${formatNumber(users[maxIdx])} users, ${formatNumber(cats[maxIdx])} cats, ${formatNumber(shots[maxIdx])} shots`,
       });
     }
   }
 
-  // --- 6. Cats/User ratio ---
-  const totalUsers = users.reduce((s, v) => s + v, 0);
-  const totalCats = cats.reduce((s, v) => s + v, 0);
-  if (totalUsers > 0) {
-    const ratio = totalCats / totalUsers;
-    if (ratio < 0.9) {
-      insights.push({
-        type: 'warning',
-        text: `Low discovery rate: ${ratio.toFixed(2)} cats per user — many users find zero cats`,
-      });
-    } else if (ratio > 2.0) {
-      insights.push({
-        type: 'positive',
-        text: `High discovery: ${ratio.toFixed(1)} cats per user on average`,
-      });
-    }
-  }
-
-  // --- 7. Stray share ---
-  const totalStray = data.reduce((s, d) => s + safe(d.newCatsStray), 0);
-  if (totalCats > 0) {
+  // --- 5. Stray/Home ratio (only when visible) ---
+  if (totalCats > 0 && filters.catType === 'ALL') {
+    const totalStray = data.reduce((s, d) => s + safe(d.newCatsStray), 0);
     const strayPct = (totalStray / totalCats) * 100;
-    if (strayPct > 75) {
-      insights.push({
+    if (strayPct > 70 || strayPct < 25) {
+      const label = strayPct > 70
+        ? `${strayPct.toFixed(0)}% strays ${ctx} — high street cat population`
+        : `Only ${strayPct.toFixed(0)}% strays ${ctx} — mostly home cats`;
+      candidates.push({
         type: 'info',
-        text: `${strayPct.toFixed(0)}% of discovered cats are strays — high street population`,
-      });
-    } else if (strayPct < 30) {
-      insights.push({
-        type: 'info',
-        text: `Only ${strayPct.toFixed(0)}% strays — users mostly photograph home cats`,
+        priority: 20,
+        text: label,
       });
     }
   }
 
-  // --- 8. Shots growth ---
-  const firstShots = avg(shots.slice(0, q));
-  const lastShots = avg(shots.slice(-q));
-  const shotsTrend = pct(lastShots, firstShots);
-
-  if (shotsTrend > 30 && n >= 14) {
-    insights.push({
-      type: 'positive',
-      text: `Photo volume surging: +${shotsTrend.toFixed(0)}% growth (existing users keep shooting)`,
-    });
+  // --- 6. Shots volume trend ---
+  if (n >= 14) {
+    const q = Math.max(1, Math.floor(n / 4));
+    const earlyShots = avg(shots.slice(0, q));
+    const lateShots = avg(shots.slice(-q));
+    if (earlyShots > 0) {
+      const change = ((lateShots - earlyShots) / earlyShots) * 100;
+      if (change > 40) {
+        candidates.push({
+          type: 'positive',
+          priority: change * 0.5,
+          text: `Photos ${ctx} (${period}): ${formatNumber(Math.round(earlyShots))}/day → ${formatNumber(Math.round(lateShots))}/day (+${change.toFixed(0)}%)`,
+        });
+      }
+    }
   }
 
-  return insights.slice(0, 6);
+  // Pick top 3 by priority, ensuring type diversity
+  candidates.sort((a, b) => b.priority - a.priority);
+  const picked = [];
+  const usedTypes = new Set();
+
+  for (const c of candidates) {
+    if (picked.length >= 3) break;
+    // Allow max 2 of same type
+    if (usedTypes.has(c.type) && picked.filter((p) => p.type === c.type).length >= 2) continue;
+    picked.push(c);
+    usedTypes.add(c.type);
+  }
+
+  return picked;
 }
 
 const TYPE_STYLES = {
@@ -179,23 +212,21 @@ const TYPE_STYLES = {
   info: { bg: 'bg-blue-50', border: 'border-blue-200', icon: '◆', iconColor: 'text-blue-500' },
 };
 
-export default function InsightsBlock({ data }) {
-  const insights = useMemo(() => detectInsights(data), [data]);
+export default function InsightsBlock({ data, filters }) {
+  const insights = useMemo(() => detectInsights(data, filters), [data, filters]);
 
   if (insights.length === 0) return null;
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 mb-4">
-      <h3 className="text-sm font-semibold text-gray-700 mb-3">
-        NB — Key Insights
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <h3 className="text-sm font-semibold text-gray-700 mb-3">NB</h3>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
         {insights.map((insight, i) => {
           const style = TYPE_STYLES[insight.type] || TYPE_STYLES.info;
           return (
             <div
               key={i}
-              className={`flex items-start gap-2 px-3 py-2 rounded-lg border text-sm ${style.bg} ${style.border}`}
+              className={`flex items-start gap-2 px-3 py-2.5 rounded-lg border text-sm leading-snug ${style.bg} ${style.border}`}
             >
               <span className={`${style.iconColor} text-xs mt-0.5 flex-shrink-0`}>{style.icon}</span>
               <span className="text-gray-700">{insight.text}</span>

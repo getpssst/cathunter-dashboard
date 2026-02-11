@@ -133,7 +133,7 @@ function App() {
         </div>
 
         {/* Insights */}
-        <InsightsBlock data={filtered} />
+        <InsightsBlock data={filtered} filters={filters} />
 
         {/* World Heatmap */}
         <WorldHeatmap filters={filters} onChange={setFilters} />
