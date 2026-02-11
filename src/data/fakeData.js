@@ -1747,6 +1747,16 @@ export const CAT_CITIES = [
   { id: 'AUS-MEL', countryCode: 'AUS', regionId: 'AU-VIC', name: 'Melbourne', coordinates: [144.9631, -37.8136], weight: 6, spread: 0.18 },
   { id: 'AUS-BNE', countryCode: 'AUS', regionId: 'AU-QLD', name: 'Brisbane', coordinates: [153.0251, -27.4698], weight: 4, spread: 0.20 },
 
+  // Missing cities for manually-defined regions
+  { id: 'MEX-TOL', countryCode: 'MEX', regionId: 'MX-MEX', name: 'Toluca', coordinates: [-99.6557, 19.2826], weight: 5, spread: 0.20 },
+  { id: 'BRA-SSA', countryCode: 'BRA', regionId: 'BR-BA', name: 'Salvador', coordinates: [-38.5108, -12.9714], weight: 4, spread: 0.22 },
+  { id: 'ARG-CABA', countryCode: 'ARG', regionId: 'AR-C', name: 'Buenos Aires City', coordinates: [-58.3816, -34.6037], weight: 6, spread: 0.12 },
+  { id: 'DEU-COL', countryCode: 'DEU', regionId: 'DE-NW', name: 'Cologne', coordinates: [6.9603, 50.9375], weight: 5, spread: 0.12 },
+  { id: 'RUS-KRD', countryCode: 'RUS', regionId: 'RU-KDA', name: 'Krasnodar', coordinates: [38.9769, 45.0353], weight: 4, spread: 0.16 },
+  { id: 'IND-CHN', countryCode: 'IND', regionId: 'IN-TN', name: 'Chennai', coordinates: [80.2707, 13.0827], weight: 5, spread: 0.20 },
+  { id: 'CHN-HZ', countryCode: 'CHN', regionId: 'CN-ZJ', name: 'Hangzhou', coordinates: [120.1551, 30.2741], weight: 5, spread: 0.18 },
+  { id: 'IDN-SMG', countryCode: 'IDN', regionId: 'ID-JT', name: 'Semarang', coordinates: [110.4203, -6.9666], weight: 4, spread: 0.22 },
+
   // --- Auto-generated from TopoJSON admin-1 ---
   // USA
   { id: 'USA-ID', countryCode: 'USA', regionId: 'US-ID', name: 'Idaho', coordinates: [-114.7, 45.5], weight: 1, spread: 0.2 },
@@ -3083,6 +3093,8 @@ function generateCountryDailyData() {
         newCatsHome: catsHome,
         shots,
         dauMau: 0,
+        dau: 0,
+        mau: 0,
       });
     });
   }
@@ -3117,6 +3129,8 @@ function generateCountryDailyData() {
       const mau = reachable * (1 - Math.pow(1 - pClamped, 30));
 
       days[i].dauMau = mau > 0 ? clamp(dau / mau, 0.02, 0.55) : 0;
+      days[i].dau = Math.round(dau);
+      days[i].mau = Math.round(mau);
     }
   });
 
@@ -3137,6 +3151,8 @@ function generateDailyFromCountries() {
     const newCatsHome = sumBy(days, (d) => d.newCatsHome);
     const shots = sumBy(days, (d) => d.shots);
     const dauMau = averageBy(days, (d) => d.dauMau, (d) => d.newUsers);
+    const dau = sumBy(days, (d) => d.dau);
+    const mau = sumBy(days, (d) => d.mau);
 
     return {
       date,
@@ -3148,6 +3164,8 @@ function generateDailyFromCountries() {
       newCatsHome,
       shots,
       dauMau,
+      dau,
+      mau,
     };
   });
 }
@@ -3302,13 +3320,15 @@ COUNTRIES.forEach((c) => {
 // --- Aggregate KPIs ---
 export function computeKpis(data, prevData) {
   const safe = (v) => (Number.isFinite(v) ? v : 0);
-  const totalUsers = data.reduce((s, d) => s + safe(d.newUsers), 0);
+  const lastMau = data.length > 0 ? safe(data[data.length - 1].mau) : 0;
   const totalCats = data.reduce((s, d) => s + safe(d.newCats), 0);
   const totalShots = data.reduce((s, d) => s + safe(d.shots), 0);
   const lastDauMau = data.length > 0 ? safe(data[data.length - 1].dauMau) : 0;
   const lastDate = data.length > 0 ? data[data.length - 1].date : null;
 
-  const prevUsers = prevData ? prevData.reduce((s, d) => s + safe(d.newUsers), 0) : null;
+  const prevMau = prevData && prevData.length > 0
+    ? safe(prevData[prevData.length - 1].mau)
+    : null;
   const prevCats = prevData ? prevData.reduce((s, d) => s + safe(d.newCats), 0) : null;
   const prevShots = prevData ? prevData.reduce((s, d) => s + safe(d.shots), 0) : null;
   const prevDauMau = prevData && prevData.length > 0
@@ -3319,7 +3339,7 @@ export function computeKpis(data, prevData) {
     prev && prev > 0 ? ((curr - prev) / prev) * 100 : null;
 
   return {
-    users: { value: totalUsers, change: pctChange(totalUsers, prevUsers) },
+    users: { value: lastMau, change: pctChange(lastMau, prevMau) },
     cats: { value: totalCats, change: pctChange(totalCats, prevCats) },
     shots: { value: totalShots, change: pctChange(totalShots, prevShots) },
     dauMau: { value: lastDauMau, change: pctChange(lastDauMau, prevDauMau), lastDate },
@@ -3349,6 +3369,8 @@ function aggregateContinentData(continent) {
       newCatsHome: 0,
       shots: 0,
       dauMau: 0,
+      dau: 0,
+      mau: 0,
     };
 
     let dauWeightedUsers = 0;
@@ -3364,6 +3386,8 @@ function aggregateContinentData(continent) {
       base.newCatsStray += d.newCatsStray;
       base.newCatsHome += d.newCatsHome;
       base.shots += d.shots;
+      base.dau += d.dau || 0;
+      base.mau += d.mau || 0;
 
       dauWeightedUsers += d.newUsers;
       dauWeightedSum += d.dauMau * d.newUsers;
@@ -3403,6 +3427,8 @@ function applyPlatform(d, platform) {
       newCatsHome: 0,
       shots: 0,
       dauMau: 0,
+      dau: 0,
+      mau: 0,
     };
   }
 
@@ -3439,6 +3465,8 @@ function applyPlatform(d, platform) {
     newCatsHome: Math.max(0, newCatsHome),
     shots: scaledShots,
     dauMau: clamp(dauMau, 0.01, 0.60),
+    dau: Math.round((d.dau || 0) * userRatio),
+    mau: Math.round((d.mau || 0) * userRatio),
   };
 
   return normalizeUsersSplit(out);
@@ -3462,6 +3490,8 @@ function applyCatType(d, catType) {
       newCatsHome: 0,
       shots: 0,
       dauMau: 0,
+      dau: 0,
+      mau: 0,
     };
   }
 
@@ -3516,6 +3546,8 @@ function applyCatType(d, catType) {
     newCatsHome: catType === 'Home' ? selectedCats : 0,
     shots: scaledShots,
     dauMau: clamp(dauMau, 0.01, 0.60),
+    dau: Math.round((d.dau || 0) * ratio),
+    mau: Math.round((d.mau || 0) * ratio),
   };
 
   return normalizeUsersSplit(out);

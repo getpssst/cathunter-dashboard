@@ -293,7 +293,7 @@ export default function WorldHeatmap({ filters, onChange }) {
           projection="geoMercator"
           projectionConfig={projectionConfig}
           width={800}
-          height={380}
+          height={450}
           style={{ width: '100%', height: 'auto' }}
         >
           {/* Base country layer */}
