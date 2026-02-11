@@ -420,7 +420,9 @@ export default function WorldHeatmap({ filters, onChange }) {
                       },
                       hover: {
                         outline: 'none',
-                        fill: isClickable ? '#93c5fd' : baseFill,
+                        fill: baseFill,
+                        stroke: isClickable ? '#3b82f6' : '#cbd5e1',
+                        strokeWidth: isClickable ? 2 : 0.5,
                       },
                       pressed: { outline: 'none' },
                     }}
@@ -476,7 +478,9 @@ export default function WorldHeatmap({ filters, onChange }) {
                       },
                       hover: {
                         outline: 'none',
-                        fill: isRusClickable ? '#93c5fd' : crimeaFill,
+                        fill: crimeaFill,
+                        stroke: isRusClickable ? '#3b82f6' : '#cbd5e1',
+                        strokeWidth: isRusClickable ? 2 : 0.5,
                       },
                       pressed: { outline: 'none' },
                     }}
