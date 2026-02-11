@@ -3,8 +3,7 @@ import {
 } from 'recharts';
 
 export default function DauMauChart({ data }) {
-  // Last 30 days of DAU/MAU
-  const chartData = data.slice(-30).map((d) => ({
+  const chartData = data.map((d) => ({
     date: d.date.slice(5), // MM-DD
     dauMau: Math.round(d.dauMau * 100) / 100,
   }));
@@ -12,7 +11,7 @@ export default function DauMauChart({ data }) {
   return (
     <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 col-span-2">
       <h3 className="text-sm font-semibold text-gray-700 mb-3">
-        DAU/MAU (Last 30 Days)
+        DAU/MAU
       </h3>
       <ResponsiveContainer width="100%" height={260}>
         <LineChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>

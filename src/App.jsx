@@ -105,10 +105,7 @@ function App() {
             <h1 className="text-2xl font-bold text-gray-900">
               CatHunter Dashboard
             </h1>
-            <p className="text-sm text-gray-500 mt-1">
-              Analytics overview
-            </p>
-          </div>
+            </div>
           <a
             href="https://cathunter-dashboard.vercel.app"
             target="_blank"
@@ -129,7 +126,7 @@ function App() {
         {/* Charts 2x2 Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
           <UsersAndCatsChart data={chartData} />
-          <DauMauChart data={dailyData} />
+          <DauMauChart data={filtered} />
           <AgeSexChart data={ageData} />
           <EngagementChart data={chartData} />
         </div>

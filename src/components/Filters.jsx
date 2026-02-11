@@ -48,7 +48,7 @@ export default function Filters({ filters, onChange }) {
   ).sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <div className="flex flex-wrap items-center gap-3 mb-6 bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+    <div className="flex flex-wrap items-center gap-3 mb-6 bg-white rounded-xl shadow-sm p-4 border border-gray-100 sticky top-0 z-30">
       {/* Period */}
       <div className="flex items-center gap-1">
         <span className="text-xs text-gray-500 mr-1 font-medium">Period</span>
