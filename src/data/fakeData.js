@@ -14,7 +14,8 @@ const randInt = (min, max) => Math.floor(rand() * (max - min + 1)) + min;
 function randNormal(mean, stddev) {
   const u1 = rand();
   const u2 = rand();
-  const z = Math.sqrt(-2 * Math.log(u1 + 0.0001)) * Math.cos(2 * Math.PI * u2);
+  const safe = Math.min(Math.max(u1, 0.0001), 0.9999);
+  const z = Math.sqrt(-2 * Math.log(safe)) * Math.cos(2 * Math.PI * u2);
   return mean + z * stddev;
 }
 
