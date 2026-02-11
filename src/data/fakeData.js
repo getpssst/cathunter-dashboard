@@ -898,6 +898,10 @@ function normalizeUsersSplit(d) {
   return { ...d, newUsersAndroid: Math.max(0, d.newUsersAndroid + diff) };
 }
 
+// iOS users tend to engage more (higher-end devices); Android less.
+// These multipliers shift the shots share relative to user share.
+const PLATFORM_ENGAGEMENT = { iOS: 1.25, Android: 0.82 };
+
 // Scale all metrics proportionally by the platform's user share.
 function applyPlatform(d, platform) {
   const total = d.newUsersIos + d.newUsersAndroid;
@@ -911,15 +915,21 @@ function applyPlatform(d, platform) {
       newCatsStray: 0,
       newCatsHome: 0,
       shots: 0,
+      dauMau: 0,
     };
   }
 
   const platformUsers = platform === 'iOS' ? d.newUsersIos : d.newUsersAndroid;
-  const ratio = platformUsers / total;
+  const userRatio = platformUsers / total;
 
-  let newCats = Math.round(d.newCats * ratio);
-  let newCatsStray = Math.round(d.newCatsStray * ratio);
-  let newCatsHome = Math.round(d.newCatsHome * ratio);
+  // Shots share accounts for engagement difference between platforms
+  const iosW = d.newUsersIos * PLATFORM_ENGAGEMENT.iOS;
+  const andW = d.newUsersAndroid * PLATFORM_ENGAGEMENT.Android;
+  const shotsRatio = (platform === 'iOS' ? iosW : andW) / (iosW + andW || 1);
+
+  let newCats = Math.round(d.newCats * userRatio);
+  let newCatsStray = Math.round(d.newCatsStray * userRatio);
+  let newCatsHome = Math.round(d.newCatsHome * userRatio);
 
   // Keep sums consistent.
   let drift = newCats - (newCatsStray + newCatsHome);
@@ -927,6 +937,10 @@ function applyPlatform(d, platform) {
     if (newCatsStray >= newCatsHome) newCatsStray += drift;
     else newCatsHome += drift;
   }
+
+  const scaledShots = Math.round(d.shots * shotsRatio);
+  // DAU/MAU: shots share differs from user share → engagement changes
+  const dauMau = d.dauMau * (userRatio > 0 ? shotsRatio / userRatio : 1);
 
   const out = {
     ...d,
@@ -936,11 +950,15 @@ function applyPlatform(d, platform) {
     newCats,
     newCatsStray: Math.max(0, newCatsStray),
     newCatsHome: Math.max(0, newCatsHome),
-    shots: Math.round(d.shots * ratio),
+    shots: scaledShots,
+    dauMau: clamp(dauMau, 0.01, 0.60),
   };
 
   return normalizeUsersSplit(out);
 }
+
+// Stray hunters go outside specifically → higher engagement; home is casual
+const CATTYPE_ENGAGEMENT = { Stray: 1.30, Home: 0.70 };
 
 function applyCatType(d, catType) {
   if (catType === 'ALL') return d;
@@ -956,11 +974,17 @@ function applyCatType(d, catType) {
       newCatsStray: 0,
       newCatsHome: 0,
       shots: 0,
+      dauMau: 0,
     };
   }
 
   const selectedCats = catType === 'Stray' ? d.newCatsStray : d.newCatsHome;
   const ratio = selectedCats / totalCats;
+
+  // Shots share weighted by engagement: stray hunters take more photos per cat
+  const strayW = d.newCatsStray * CATTYPE_ENGAGEMENT.Stray;
+  const homeW = d.newCatsHome * CATTYPE_ENGAGEMENT.Home;
+  const shotsRatio = (catType === 'Stray' ? strayW : homeW) / (strayW + homeW || 1);
 
   let newUsers = Math.round(d.newUsers * ratio);
   let newUsersIos = Math.round(d.newUsersIos * ratio);
@@ -991,6 +1015,10 @@ function applyCatType(d, catType) {
     }
   }
 
+  const scaledShots = Math.round(d.shots * shotsRatio);
+  const userRatio = d.newUsers > 0 ? newUsers / d.newUsers : 0;
+  const dauMau = d.dauMau * (userRatio > 0 ? shotsRatio / userRatio : 1);
+
   const out = {
     ...d,
     newUsers,
@@ -999,7 +1027,8 @@ function applyCatType(d, catType) {
     newCats: selectedCats,
     newCatsStray: catType === 'Stray' ? selectedCats : 0,
     newCatsHome: catType === 'Home' ? selectedCats : 0,
-    shots: Math.round(d.shots * ratio),
+    shots: scaledShots,
+    dauMau: clamp(dauMau, 0.01, 0.60),
   };
 
   return normalizeUsersSplit(out);
