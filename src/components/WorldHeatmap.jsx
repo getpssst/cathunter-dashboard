@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import {
   ComposableMap,
   Geographies,
@@ -59,6 +59,32 @@ function sum(arr, key) {
   return arr.reduce((s, d) => s + (d[key] || 0), 0);
 }
 
+// Ray-casting point-in-polygon test
+function pointInRing(point, ring) {
+  const [x, y] = point;
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+function pointInGeometry(point, geometry) {
+  if (!geometry) return true;
+  const { type, coordinates } = geometry;
+  if (type === 'Polygon') {
+    return pointInRing(point, coordinates[0]);
+  }
+  if (type === 'MultiPolygon') {
+    return coordinates.some((poly) => pointInRing(point, poly[0]));
+  }
+  return true;
+}
+
 // Compute scale & center from a GeoJSON feature so the region fits in viewport
 function computeRegionZoom(geo, viewWidth, viewHeight) {
   const coords = [];
@@ -105,6 +131,16 @@ export default function WorldHeatmap({ filters, onChange }) {
   const [tooltip, setTooltip] = useState(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [zoomedRegion, setZoomedRegion] = useState(null); // ADMIN_REGIONS entry or null
+
+  // Reset zoom when country filter changes externally (via Filters dropdown)
+  const prevCountryRef = useRef(country);
+  useEffect(() => {
+    if (prevCountryRef.current !== country) {
+      setZoomedRegion(null);
+      setTooltip(null);
+    }
+    prevCountryRef.current = country;
+  }, [country]);
 
   const isCountryView = country !== 'ALL';
   const selectedCountry = isCountryView ? COUNTRY_BY_CODE[country] : null;
@@ -178,13 +214,18 @@ export default function WorldHeatmap({ filters, onChange }) {
     return { scale: 135, center: [0, 25] };
   }, [selectedCountry, zoomedRegion]);
 
-  // Cat dots for region zoom view — count scales with period
+  // Cat dots for region zoom view — count scales with period, filtered to land
   const regionDots = useMemo(() => {
     if (!zoomedRegion || !selectedCountry) return [];
     const periodMax = { D: 80, W: 150, M: 300, Y: 450, ALL: 500 };
     const maxDots = periodMax[period] || 500;
     const allDots = generateCountryCatDots(selectedCountry.code, catType, maxDots);
-    return allDots.filter((d) => d.regionId === zoomedRegion.id);
+    const regionFiltered = allDots.filter((d) => d.regionId === zoomedRegion.id);
+    // Filter out dots that fall outside the region polygon (e.g. in water)
+    if (zoomedRegion.geoData) {
+      return regionFiltered.filter((d) => pointInGeometry(d.coordinates, zoomedRegion.geoData));
+    }
+    return regionFiltered;
   }, [zoomedRegion, selectedCountry, catType, period]);
 
   // Region data for country drill-down — distribute country metrics across admin regions
@@ -274,7 +315,8 @@ export default function WorldHeatmap({ filters, onChange }) {
     }
 
     const zoom = geo ? computeRegionZoom(geo, 800, 450) : null;
-    setZoomedRegion({ ...region, zoom });
+    const geoData = geo?.geometry || null;
+    setZoomedRegion({ ...region, zoom, geoData });
     setTooltip(null);
   };
 
