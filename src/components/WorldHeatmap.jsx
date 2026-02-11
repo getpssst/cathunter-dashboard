@@ -373,7 +373,8 @@ export default function WorldHeatmap({ filters, onChange }) {
                     style={{
                       default: {
                         outline: 'none',
-                        cursor: isClickable || zoomedRegion ? 'pointer' : 'default',
+                        cursor: isClickable ? 'pointer' : 'default',
+                        pointerEvents: isCountryView && !isSelected ? 'none' : 'auto',
                       },
                       hover: {
                         outline: 'none',
@@ -482,7 +483,10 @@ export default function WorldHeatmap({ filters, onChange }) {
                         default: { outline: 'none', cursor: 'pointer' },
                         hover: {
                           outline: 'none',
-                          fill: '#93c5fd',
+                          fill: regionFill,
+                          fillOpacity: 0.6,
+                          stroke: '#3b82f6',
+                          strokeWidth: 1.5,
                         },
                         pressed: { outline: 'none' },
                       }}
