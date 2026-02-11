@@ -587,7 +587,8 @@ function generateCountryDailyData() {
       const catsStray = Math.round(cats * strayR);
       const catsHome = Math.max(0, cats - catsStray);
 
-      const dauMau = clamp(GLOBAL_CURVE.dauMau[dayIndex] * randNormal(1.0, 0.06), 0.03, 0.45);
+      // Keep randNormal call to preserve RNG state; dauMau overwritten below
+      randNormal(1.0, 0.06);
 
       out[c.code].push({
         date,
@@ -598,10 +599,28 @@ function generateCountryDailyData() {
         newCatsStray: catsStray,
         newCatsHome: catsHome,
         shots,
-        dauMau,
+        dauMau: 0,
       });
     });
   }
+
+  // Post-process: compute DAU/MAU from actual shots & cumulative user base
+  // DAU  = shots / avgShotsPerActiveUser  (shots proxy for daily activity)
+  // MAU  = exponentially-decaying running sum of newUsers (reachable user pool)
+  // decay ≈ exp(-0.04) per day → D7 ~75%, D30 ~30%, D90 ~3%
+  const DAILY_DECAY = Math.exp(-0.04);
+
+  COUNTRIES.forEach((c) => {
+    const days = out[c.code];
+    const avgShotsPerActiveUser = Math.max(1, c.shotsPerCat * c.catsPerUser * 0.5);
+
+    let mau = 0;
+    for (let i = 0; i < days.length; i++) {
+      mau = mau * DAILY_DECAY + days[i].newUsers;
+      const dau = days[i].shots / avgShotsPerActiveUser;
+      days[i].dauMau = mau > 0 ? clamp(dau / mau, 0.02, 0.55) : 0;
+    }
+  });
 
   return out;
 }
