@@ -6,7 +6,7 @@ export default function UsersAndCatsChart({ data }) {
   return (
     <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
       <h3 className="text-sm font-semibold text-gray-700 mb-3">New Users &amp; Cats</h3>
-      <ResponsiveContainer width="100%" height={260}>
+      <ResponsiveContainer width="100%" height={320}>
         <BarChart data={data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
           <XAxis

@@ -1,5 +1,5 @@
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
 
 function toNum(v) {
@@ -42,6 +42,7 @@ export default function EngagementChart({ data }) {
           <Tooltip
             formatter={(v, name) => [Number(v).toFixed(2), name]}
           />
+          <Legend wrapperStyle={{ fontSize: 11 }} />
           <Line
             yAxisId="main"
             type="monotone"

@@ -1,5 +1,5 @@
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
 
 export default function DauMauChart({ data }) {
@@ -28,6 +28,7 @@ export default function DauMauChart({ data }) {
             tickFormatter={(v) => v.toFixed(2)}
           />
           <Tooltip formatter={(v) => [v.toFixed(2), 'DAU/MAU']} />
+          <Legend wrapperStyle={{ fontSize: 11 }} />
           <Line
             type="monotone"
             dataKey="dauMau"
