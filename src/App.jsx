@@ -7,6 +7,7 @@ import DauMauChart from './components/DauMauChart';
 import WorldHeatmap from './components/WorldHeatmap';
 import EngagementChart from './components/EngagementChart';
 import InsightsBlock from './components/InsightsBlock';
+import DevDocsPage from './components/DevDocsPage';
 import {
   dailyData,
   filterData,
@@ -21,6 +22,7 @@ import {
 } from './data/fakeData';
 
 function App() {
+  const [showDocs, setShowDocs] = useState(false);
   const [filters, setFilters] = useState({
     period: 'Y',
     continent: 'ALL',
@@ -99,6 +101,10 @@ function App() {
     });
   }, [filters, filtered]);
 
+  if (showDocs) {
+    return <DevDocsPage onClose={() => setShowDocs(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-100 p-4 lg:p-6">
       <div className="max-w-7xl mx-auto">
@@ -108,7 +114,16 @@ function App() {
             <h1 className="text-2xl font-bold text-gray-900">
               CatHunter Dashboard
             </h1>
-            </div>
+          </div>
+          <button
+            onClick={() => setShowDocs(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            Dev Docs
+          </button>
         </div>
 
         {/* Key Insights */}
